@@ -1,56 +1,52 @@
 import { Tabs } from "expo-router";
-import React from "react";
-import { Image, Text, View } from "react-native";
+import { Image, ImageSourcePropType, View } from "react-native";
 
 import { icons } from "@/constants";
 
-import { TabBarIconProps } from "@/type";
-import cn from "clsx";
-
-const TabBarIcon = ({ focused, icon, title }: TabBarIconProps) => (
-  <View className="tab-icon">
-    <Image
-      source={icon}
-      className="size-7"
-      resizeMode="contain"
-      tintColor={focused ? "#FE8C00" : "#5D5F6D"}
-    />
-    <Text
-      className={cn(
-        "text-sm font-bold",
-        focused ? "text-primary" : "text-gray-200"
-      )}
+const TabIcon = ({
+  source,
+  focused,
+}: {
+  source: ImageSourcePropType;
+  focused: boolean;
+}) => (
+  <View
+    className={`flex flex-row justify-center items-center rounded-full ${focused ? "bg-general-300" : ""}`}
+  >
+    <View
+      className={`rounded-full w-12 h-12 items-center justify-center ${focused ? "bg-general-400" : ""}`}
     >
-      {title}
-    </Text>
+      <Image
+        source={source}
+        tintColor="white"
+        resizeMode="contain"
+        className="w-7 h-7"
+      />
+    </View>
   </View>
 );
 
-export default function TabLayout() {
-  // const { isAuthenticated } = useAuthStore();
-
-  // if (!isAuthenticated) return <Redirect href="/sign-in" />;
-
+export default function Layout() {
   return (
     <Tabs
+      initialRouteName="index"
       screenOptions={{
-        headerShown: false,
+        tabBarActiveTintColor: "white",
+        tabBarInactiveTintColor: "white",
         tabBarShowLabel: false,
         tabBarStyle: {
-          borderTopLeftRadius: 50,
-          borderTopRightRadius: 50,
-          borderBottomRightRadius: 50,
-          borderBottomLeftRadius: 50,
+          backgroundColor: "#333333",
+          borderRadius: 50,
+          paddingBottom: 0, // ios only
+          overflow: "hidden",
           marginHorizontal: 20,
-          height: 80,
+          marginBottom: 20,
+          height: 78,
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          flexDirection: "row",
           position: "absolute",
-          bottom: 40,
-          backgroundColor: "white",
-          shadowColor: "1A1A1A",
-          shadowOffset: { width: 0, height: 2 },
-          shadowOpacity: 0.1,
-          shadowRadius: 4,
-          elevation: 5,
         },
       }}
     >
@@ -58,17 +54,9 @@ export default function TabLayout() {
         name="index"
         options={{
           title: "Home",
+          headerShown: false,
           tabBarIcon: ({ focused }) => (
-            <TabBarIcon icon={icons.home} focused={focused} title="Home" />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="chat"
-        options={{
-          title: "Chat",
-          tabBarIcon: ({ focused }) => (
-            <TabBarIcon icon={icons.chat} focused={focused} title="Chat" />
+            <TabIcon source={icons.home} focused={focused} />
           ),
         }}
       />
@@ -76,8 +64,19 @@ export default function TabLayout() {
         name="rides"
         options={{
           title: "Rides",
+          headerShown: false,
           tabBarIcon: ({ focused }) => (
-            <TabBarIcon icon={icons.map} focused={focused} title="Rides" />
+            <TabIcon source={icons.list} focused={focused} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="chat"
+        options={{
+          title: "Chat",
+          headerShown: false,
+          tabBarIcon: ({ focused }) => (
+            <TabIcon source={icons.chat} focused={focused} />
           ),
         }}
       />
@@ -85,8 +84,9 @@ export default function TabLayout() {
         name="profile"
         options={{
           title: "Profile",
+          headerShown: false,
           tabBarIcon: ({ focused }) => (
-            <TabBarIcon icon={icons.person} focused={focused} title="Profile" />
+            <TabIcon source={icons.profile} focused={focused} />
           ),
         }}
       />

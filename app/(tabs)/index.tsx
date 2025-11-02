@@ -1,11 +1,14 @@
-import { Text, View } from "react-native";
+import { SignedIn, useUser } from "@clerk/clerk-expo";
+import { Text } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Index() {
+  const { user } = useUser();
   return (
-    <View className="flex-1 items-center justify-center bg-white">
-      <Text className="text-xl font-bold text-blue-500">
-        Welcome to Nativewind!
-      </Text>
-    </View>
+    <SafeAreaView className="">
+      <SignedIn>
+        <Text>Hello {user?.emailAddresses[0].emailAddress}</Text>
+      </SignedIn>
+    </SafeAreaView>
   );
 }
