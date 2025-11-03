@@ -3,7 +3,6 @@ import { calculateRegion, generateMarkersFromData } from "@/lib/map";
 import { useDriverStore, useLocationStore } from "@/store";
 import { MarkerData } from "@/type";
 import React, { useEffect, useState } from "react";
-import { Text } from "react-native";
 import MapView, { Marker, PROVIDER_DEFAULT } from "react-native-maps";
 
 const drivers = [
@@ -116,7 +115,6 @@ const Map = () => {
           }
         ></Marker>
       ))}
-      <Text>Map</Text>
     </MapView>
   );
 };

@@ -100,8 +100,8 @@ const LocationAutocomplete = ({
   };
 
   return (
-    <View className="relative px-4 py-2">
-      <View className="relative flex flex-row items-center bg-white rounded-full shadow">
+    <View className="relative w-full py-2">
+      <View className="relative flex flex-row items-center">
         {/* Left Icon */}
         <View className="absolute left-3" style={{ zIndex: 90 }}>
           <Image
@@ -123,12 +123,13 @@ const LocationAutocomplete = ({
               ? textInputBackgroundColor
               : "white",
           }}
+          numberOfLines={1}
         />
       </View>
 
       {/* Dropdown suggestions */}
       {suggestions.length > 0 && (
-        <View className="absolute left-0 right-0 z-50 mx-4 bg-white rounded-lg shadow-lg top-16 max-h-60">
+        <View className="absolute left-0 right-0 z-50 bg-white rounded-lg shadow-lg top-16 max-h-60">
           <FlatList
             keyboardShouldPersistTaps="handled"
             data={suggestions}
