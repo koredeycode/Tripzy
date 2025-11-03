@@ -63,13 +63,6 @@ const Map = () => {
   const { selectedDriver, setDrivers } = useDriverStore();
   const [markers, setMarkers] = useState<MarkerData[]>([]);
 
-  console.log({
-    userLatitude,
-    userLongitude,
-    destinationLatitude,
-    destinationLongitude,
-  });
-
   const region = calculateRegion({
     userLatitude,
     userLongitude,
@@ -86,7 +79,6 @@ const Map = () => {
         userLatitude,
         userLongitude,
       });
-      console.log({ markers: newMarkers });
       setMarkers(newMarkers);
     }
   }, [drivers]);

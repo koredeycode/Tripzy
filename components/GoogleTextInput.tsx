@@ -5,7 +5,6 @@ import { View } from "react-native";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 
 const googlePlacesApiKey = process.env.EXPO_PUBLIC_GOOGLE_API_KEY;
-console.log("Google API Key:", process.env.EXPO_PUBLIC_GOOGLE_API_KEY);
 
 const GoogleTextInput = ({
   icon,

@@ -157,8 +157,6 @@ export default function Index() {
         longitude: location.coords?.longitude,
       });
 
-      console.log(address);
-
       setUserLocation({
         latitude: location.coords.latitude,
         longitude: location.coords.longitude,
@@ -166,11 +164,6 @@ export default function Index() {
           address[0].formattedAddress ||
           `${address[0].name}, ${address[0].region}`,
       });
-      console.log({
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
-      });
-      console.log({ address: `${address[0].name}, ${address[0].region}` });
     };
     requestLocation();
   }, []);
