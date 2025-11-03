@@ -1,8 +1,12 @@
-import GoogleTextInput from "@/components/GoogleTextInput";
+import LocationAutocomplete from "@/components/LocationAutocomplete";
 import Map from "@/components/Map";
 import RideCard from "@/components/RideCard";
 import { icons, images } from "@/constants";
+import { useLocationStore } from "@/store";
 import { useUser } from "@clerk/clerk-expo";
+import * as Location from "expo-location";
+import { router } from "expo-router";
+import { useEffect, useState } from "react";
 import {
   ActivityIndicator,
   FlatList,
@@ -121,12 +125,55 @@ const recentRides = [
 ];
 
 export default function Index() {
+  const { setUserLocation, setDestinationLocation } = useLocationStore();
   const { user } = useUser();
   const loading = false;
 
-  const handleSignOut = () => {};
-  const handleDestinationPress = () => {};
+  const [hasPermissions, setHasPermissions] = useState(false);
 
+  const handleSignOut = () => {};
+
+  const handleDestinationPress = (location: {
+    latitude: number;
+    longitude: number;
+    address: string;
+  }) => {
+    setDestinationLocation(location);
+
+    router.push(`/find-ride`);
+  };
+
+  useEffect(() => {
+    const requestLocation = async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        setHasPermissions(false);
+        return;
+      }
+      let location = await Location.getCurrentPositionAsync();
+
+      const address = await Location.reverseGeocodeAsync({
+        latitude: location.coords?.latitude,
+        longitude: location.coords?.longitude,
+      });
+
+      console.log(address);
+
+      setUserLocation({
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+        address:
+          address[0].formattedAddress ||
+          `${address[0].name}, ${address[0].region}`,
+      });
+      console.log({
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      });
+      console.log({ address: `${address[0].name}, ${address[0].region}` });
+    };
+    requestLocation();
+  }, []);
   return (
     <SafeAreaView className="">
       <FlatList
@@ -168,16 +215,17 @@ export default function Index() {
                 <Image source={icons.out} className="w-4 h-4" />
               </TouchableOpacity>
             </View>
-            <GoogleTextInput
+            {/* <GoogleTextInput
               icon={icons.search}
               containerStyle="bg-white shadow-md shadow-neutral-300"
               handlePress={handleDestinationPress}
-            />
+            /> */}
+            <LocationAutocomplete onSelect={handleDestinationPress} />
             <>
               <Text className="mt-5 text-xl font-jakarta-bold">
                 Your Current Location
               </Text>
-              <View className="flex flex-row items-center bg-transparent h-[300px]">
+              <View className="flex flex-row items-center justify-center bg-black h-[300px]">
                 <Map />
               </View>
             </>

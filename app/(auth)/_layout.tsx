@@ -8,7 +8,7 @@ export default function AuthLayout() {
   console.log({ isSignedIn, userId });
 
   if (isSignedIn) {
-    return <Redirect href={"/(tabs)"} />;
+    return <Redirect href={"/(root)/(tabs)"} />;
   }
   return <Slot />;
 }
