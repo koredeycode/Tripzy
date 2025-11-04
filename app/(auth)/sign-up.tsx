@@ -75,7 +75,7 @@ const SignUp = () => {
         });
         await setActive({ session: signUpAttempt.createdSessionId });
         setVerification({ ...verification, state: "success" });
-        // router.replace("/");
+        router.replace("/(auth)/sign-in");
       } else {
         // If the status is not complete, check why. User may need to
         // complete further steps.
@@ -207,7 +207,7 @@ const SignUp = () => {
               title="Browse Home"
               onPress={() => {
                 setShowSuccessModal(false);
-                router.push("/(tabs)");
+                router.push("/(auth)/sign-in");
               }}
               className="mt-5"
             />
