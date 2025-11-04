@@ -6,8 +6,6 @@ export async function POST(request: Request) {
     const body = await request.json();
     const { name, email, amount } = body;
 
-    console.log({ body });
-
     if (!name || !email || !amount) {
       return new Response(
         JSON.stringify({ error: "Invalid email or parmaters" }),
@@ -28,7 +26,6 @@ export async function POST(request: Request) {
       { customer: customer.id },
       { apiVersion: "2025-10-29.clover" }
     );
-    console.log({ ephemeralKey });
 
     const paymentIntent = await stripe.paymentIntents.create({
       amount: parseInt(amount) * 100,
@@ -41,7 +38,6 @@ export async function POST(request: Request) {
         allow_redirects: "never",
       },
     });
-    console.log({ paymentIntent });
 
     return new Response(
       JSON.stringify({

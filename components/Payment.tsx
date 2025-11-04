@@ -32,7 +32,6 @@ const Payment = ({
   const { userId } = useAuth();
 
   const fetchPaymentSheetParams = async () => {
-    console.log("calling fetch pay params");
     const { paymentIntent, ephemeralKey, customer } = await fetchAPI(
       "/(api)/(stripe)/create",
       {
@@ -54,11 +53,8 @@ const Payment = ({
   };
 
   const initializePaymentSheet = async () => {
-    console.log("Initinggg..");
     const { paymentIntent, ephemeralKey, customer } =
       await fetchPaymentSheetParams();
-
-    console.log({ paymentIntent, ephemeralKey, customer });
 
     const { error } = await initPaymentSheet({
       merchantDisplayName: "Tripzy Inc.",
