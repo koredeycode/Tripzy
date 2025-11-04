@@ -99,7 +99,7 @@ const Payment = ({
         }),
       });
       setSuccess(true);
-      Alert.alert("Success", "Your order is confirmed!");
+      // Alert.alert("Success", "Your order is confirmed!");
     }
   };
 
