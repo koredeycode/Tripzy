@@ -72,6 +72,54 @@ export const calculateRegion = ({
   };
 };
 
+// export const calculateDriverTimes = async ({
+//   markers,
+//   userLatitude,
+//   userLongitude,
+//   destinationLatitude,
+//   destinationLongitude,
+// }: {
+//   markers: MarkerData[];
+//   userLatitude: number | null;
+//   userLongitude: number | null;
+//   destinationLatitude: number | null;
+//   destinationLongitude: number | null;
+// }) => {
+//   if (
+//     !userLatitude ||
+//     !userLongitude ||
+//     !destinationLatitude ||
+//     !destinationLongitude
+//   )
+//     return;
+
+//   try {
+//     const timesPromises = markers.map(async (marker) => {
+//       const responseToUser = await fetch(
+//         `https://maps.googleapis.com/maps/api/directions/json?origin=${marker.latitude},${marker.longitude}&destination=${userLatitude},${userLongitude}&key=${directionsAPI}`
+//       );
+//       const dataToUser = await responseToUser.json();
+//       const timeToUser = dataToUser.routes[0].legs[0].duration.value; // Time in seconds
+
+//       const responseToDestination = await fetch(
+//         `https://maps.googleapis.com/maps/api/directions/json?origin=${userLatitude},${userLongitude}&destination=${destinationLatitude},${destinationLongitude}&key=${directionsAPI}`
+//       );
+//       const dataToDestination = await responseToDestination.json();
+//       const timeToDestination =
+//         dataToDestination.routes[0].legs[0].duration.value; // Time in seconds
+
+//       const totalTime = (timeToUser + timeToDestination) / 60; // Total time in minutes
+//       const price = (totalTime * 0.5).toFixed(2); // Calculate price based on time
+
+//       return { ...marker, time: totalTime, price };
+//     });
+
+//     return await Promise.all(timesPromises);
+//   } catch (error) {
+//     console.error("Error calculating driver times:", error);
+//   }
+// };
+
 export const calculateDriverTimes = async ({
   markers,
   userLatitude,
@@ -93,29 +141,34 @@ export const calculateDriverTimes = async ({
   )
     return;
 
+  const ORS_API_KEY = process.env.EXPO_PUBLIC_ORS_API_KEY; // store key in .env
+
   try {
     const timesPromises = markers.map(async (marker) => {
+      // Step 1: Calculate time from driver → user
       const responseToUser = await fetch(
-        `https://maps.googleapis.com/maps/api/directions/json?origin=${marker.latitude},${marker.longitude}&destination=${userLatitude},${userLongitude}&key=${directionsAPI}`
+        `https://api.openrouteservice.org/v2/directions/driving-car?api_key=${ORS_API_KEY}&start=${marker.longitude},${marker.latitude}&end=${userLongitude},${userLatitude}`
       );
       const dataToUser = await responseToUser.json();
-      const timeToUser = dataToUser.routes[0].legs[0].duration.value; // Time in seconds
+      const timeToUser = dataToUser.routes?.[0]?.summary?.duration ?? 0; // seconds
 
+      // Step 2: Calculate time from user → destination
       const responseToDestination = await fetch(
-        `https://maps.googleapis.com/maps/api/directions/json?origin=${userLatitude},${userLongitude}&destination=${destinationLatitude},${destinationLongitude}&key=${directionsAPI}`
+        `https://api.openrouteservice.org/v2/directions/driving-car?api_key=${ORS_API_KEY}&start=${userLongitude},${userLatitude}&end=${destinationLongitude},${destinationLatitude}`
       );
       const dataToDestination = await responseToDestination.json();
       const timeToDestination =
-        dataToDestination.routes[0].legs[0].duration.value; // Time in seconds
+        dataToDestination.routes?.[0]?.summary?.duration ?? 0; // seconds
 
-      const totalTime = (timeToUser + timeToDestination) / 60; // Total time in minutes
-      const price = (totalTime * 0.5).toFixed(2); // Calculate price based on time
+      // Step 3: Calculate total time (in minutes) and price
+      const totalTime = (timeToUser + timeToDestination) / 60;
+      const price = (totalTime * 0.5).toFixed(2);
 
       return { ...marker, time: totalTime, price };
     });
 
     return await Promise.all(timesPromises);
   } catch (error) {
-    console.error("Error calculating driver times:", error);
+    console.error("Error calculating driver times (ORS):", error);
   }
 };
