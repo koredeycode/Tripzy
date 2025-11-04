@@ -1,3 +1,4 @@
+import ORSMapViewDirections from "@/components/ORSMapViewDirections";
 import { icons } from "@/constants";
 import { useFetch } from "@/lib/fetch";
 import {
@@ -97,8 +98,46 @@ const Map = () => {
           image={
             selectedDriver === marker.id ? icons.selectedMarker : icons.marker
           }
-        ></Marker>
+        />
       ))}
+      {destinationLatitude && destinationLongitude && (
+        <>
+          <Marker
+            key={"destination"}
+            coordinate={{
+              latitude: destinationLatitude,
+              longitude: destinationLongitude,
+            }}
+            title="Destination"
+            image={icons.pin}
+          />
+          {/* <MapViewDirections
+            origin={{ latitude: userLatitude, longitude: userLongitude }}
+            destination={{
+              latitude: destinationLatitude,
+              longitude: destinationLongitude,
+            }}
+            strokeColor="#0286ff"
+            strokeWidth={2}
+          /> */}
+          <ORSMapViewDirections
+            origin={{ latitude: userLatitude, longitude: userLongitude }}
+            destination={{
+              latitude: destinationLatitude,
+              longitude: destinationLongitude,
+            }}
+            apiKey={process.env.EXPO_PUBLIC_ORS_API_KEY!}
+            strokeColor="#0286ff"
+            strokeWidth={3}
+            // onReady={({ distance, duration }) => {
+            //   console.log(
+            //     `Distance: ${distance / 1000} km, Duration: ${duration / 60} min`
+            //   );
+            // }}
+            // onError={(err) => console.error("Route error:", err)}
+          />
+        </>
+      )}
     </MapView>
   );
 };
