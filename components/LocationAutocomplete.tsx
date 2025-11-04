@@ -70,7 +70,7 @@ const LocationAutocomplete = ({
       }
 
       const data = await response.json();
-      console.log({ data });
+      // console.log({ data });
       setSuggestions(data);
     } catch (err) {
       console.error("Error fetching location suggestions:", err);

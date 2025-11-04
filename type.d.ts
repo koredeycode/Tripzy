@@ -18,7 +18,7 @@ export interface MarkerData {
   profile_image_url: string;
   car_image_url: string;
   car_seats: number;
-  rating: number;
+  rating: string;
   first_name: string;
   last_name: string;
   time?: number;

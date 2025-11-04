@@ -13,7 +13,7 @@ import MapView, { Marker, PROVIDER_DEFAULT } from "react-native-maps";
 
 const Map = () => {
   const { data: drivers, loading, error } = useFetch<Driver[]>("/(api)/driver");
-  console.log({ drivers });
+
   const {
     userLatitude,
     userLongitude,
@@ -41,10 +41,12 @@ const Map = () => {
       });
       setMarkers(newMarkers);
     }
-  }, [drivers]);
+  }, [drivers, userLatitude, userLongitude]);
 
   useEffect(() => {
+    console.log(markers.length > 0, destinationLatitude, destinationLongitude);
     if (markers.length > 0 && destinationLatitude && destinationLongitude) {
+      ("calculating driver times");
       calculateDriverTimes({
         markers,
         userLongitude,
@@ -55,6 +57,7 @@ const Map = () => {
         setDrivers(drivers as MarkerData[]);
       });
     }
+    // console.log({ driver: drivers[0] });
   }, [markers, destinationLatitude, destinationLongitude]);
 
   if (loading || !userLatitude || !userLongitude)

@@ -218,7 +218,7 @@ export default function Index() {
               <Text className="mt-5 text-xl font-jakarta-bold">
                 Your Current Location
               </Text>
-              <View className="flex flex-row items-center justify-center bg-black h-[300px]">
+              <View className="flex flex-row items-center justify-center h-[300px]">
                 <Map />
               </View>
             </>

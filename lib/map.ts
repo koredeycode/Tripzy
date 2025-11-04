@@ -142,27 +142,30 @@ export const calculateDriverTimes = async ({
     return;
 
   const ORS_API_KEY = process.env.EXPO_PUBLIC_ORS_API_KEY; // store key in .env
-
+  // console.log({ ORS_API_KEY });
   try {
     const timesPromises = markers.map(async (marker) => {
       // Step 1: Calculate time from driver → user
-      const responseToUser = await fetch(
-        `https://api.openrouteservice.org/v2/directions/driving-car?api_key=${ORS_API_KEY}&start=${marker.longitude},${marker.latitude}&end=${userLongitude},${userLatitude}`
-      );
-      const dataToUser = await responseToUser.json();
-      const timeToUser = dataToUser.routes?.[0]?.summary?.duration ?? 0; // seconds
+      // const responseToUser = await fetch(
+      //   `https://api.openrouteservice.org/v2/directions/driving-car?api_key=${ORS_API_KEY}&start=${marker.longitude},${marker.latitude}&end=${userLongitude},${userLatitude}`
+      // );
+      // const dataToUser = await responseToUser.json();
+      // const timeToUser = dataToUser.routes?.[0]?.summary?.duration; // seconds
 
       // Step 2: Calculate time from user → destination
-      const responseToDestination = await fetch(
-        `https://api.openrouteservice.org/v2/directions/driving-car?api_key=${ORS_API_KEY}&start=${userLongitude},${userLatitude}&end=${destinationLongitude},${destinationLatitude}`
-      );
-      const dataToDestination = await responseToDestination.json();
-      const timeToDestination =
-        dataToDestination.routes?.[0]?.summary?.duration ?? 0; // seconds
+      // const responseToDestination = await fetch(
+      //   `https://api.openrouteservice.org/v2/directions/driving-car?api_key=${ORS_API_KEY}&start=${userLongitude},${userLatitude}&end=${destinationLongitude},${destinationLatitude}`
+      // );
+      // const dataToDestination = await responseToDestination.json();
+      // const timeToDestination =
+      //   dataToDestination.routes?.[0]?.summary?.duration; // seconds
 
       // Step 3: Calculate total time (in minutes) and price
-      const totalTime = (timeToUser + timeToDestination) / 60;
-      const price = (totalTime * 0.5).toFixed(2);
+      // const totalTime = (timeToUser + timeToDestination) / 60;
+      // const price = (totalTime * 0.5).toFixed(2);
+
+      const totalTime = 60;
+      const price = 5;
 
       return { ...marker, time: totalTime, price };
     });
