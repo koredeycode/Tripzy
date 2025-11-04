@@ -1,8 +1,13 @@
+import { images } from "@/constants";
 import { fetchAPI } from "@/lib/fetch";
+import { useLocationStore } from "@/store";
 import { PaymentProps } from "@/type";
+import { useAuth } from "@clerk/clerk-expo";
 import { useStripe } from "@stripe/stripe-react-native";
+import { router } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { Alert, View } from "react-native";
+import { Alert, Image, Text, View } from "react-native";
+import ReactNativeModal from "react-native-modal";
 import CustomButton from "./CustomButton";
 
 const Payment = ({
@@ -13,7 +18,18 @@ const Payment = ({
   rideTime,
 }: PaymentProps) => {
   const { initPaymentSheet, presentPaymentSheet } = useStripe();
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const {
+    userAddress,
+    userLongitude,
+    userLatitude,
+    destinationAddress,
+    destinationLatitude,
+    destinationLongitude,
+  } = useLocationStore();
+
+  const { userId } = useAuth();
 
   const fetchPaymentSheetParams = async () => {
     console.log("calling fetch pay params");
@@ -45,7 +61,7 @@ const Payment = ({
     console.log({ paymentIntent, ephemeralKey, customer });
 
     const { error } = await initPaymentSheet({
-      merchantDisplayName: "Tripzy",
+      merchantDisplayName: "Tripzy Inc.",
       customerId: customer,
       customerEphemeralKeySecret: ephemeralKey,
       paymentIntentClientSecret: paymentIntent.client_secret,
@@ -55,9 +71,11 @@ const Payment = ({
       defaultBillingDetails: {
         name: fullName,
       },
+      returnURL: "tripzy://book-ride",
     });
     if (!error) {
-      setLoading(true);
+      console.log(error);
+      // setLoading(true);
     }
   };
 
@@ -67,6 +85,24 @@ const Payment = ({
     if (error) {
       Alert.alert(`Error code: ${error.code}`, error.message);
     } else {
+      await fetchAPI("/(api)/ride/create", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          origin_address: userAddress,
+          destination_address: destinationAddress,
+          origin_latitude: userLatitude,
+          origin_longitude: userLongitude,
+          destination_latitude: destinationLatitude,
+          destination_longitude: destinationLongitude,
+          ride_time: rideTime.toFixed(0),
+          fare_price: parseInt(amount) * 100,
+          payment_status: "paid",
+          driver_id: driverId,
+          user_id: userId,
+        }),
+      });
+      setSuccess(true);
       Alert.alert("Success", "Your order is confirmed!");
     }
   };
@@ -82,6 +118,29 @@ const Payment = ({
         className="my-10"
         onPress={openPaymentSheet}
       />
+      <ReactNativeModal
+        isVisible={success}
+        onBackdropPress={() => setSuccess(false)}
+      >
+        <View className="items-center justify-center bg-white flex-flex-col p-7 rounded-2xl">
+          <Image source={images.check} className="mt-5 w-28 h-28" />
+          <Text className="mt-5 text-2xl text-center font-jakarta-bold">
+            Ride booked!
+          </Text>
+          <Text className="mt-3 text-center text-md text-general-200 font-jakarta-medium">
+            Thank you for your booking. Your reservation has been placed. Please
+            proceed with your trip.
+          </Text>
+          <CustomButton
+            title="Back Home"
+            onPress={() => {
+              setSuccess(true);
+              router.push("/(root)/(tabs)");
+            }}
+            className="mt-5"
+          />
+        </View>
+      </ReactNativeModal>
     </View>
   );
 };
