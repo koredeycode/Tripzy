@@ -4,6 +4,7 @@ import RideCard from "@/components/RideCard";
 import { icons, images } from "@/constants";
 import { useFetch } from "@/lib/fetch";
 import { useLocationStore } from "@/store";
+import { Ride } from "@/type";
 import { useAuth, useUser } from "@clerk/clerk-expo";
 import * as Location from "expo-location";
 import { router } from "expo-router";
@@ -129,7 +130,9 @@ export default function Index() {
   const { setUserLocation, setDestinationLocation } = useLocationStore();
   const { user } = useUser();
   const { signOut } = useAuth();
-  const { data: recentRides, loading } = useFetch(`/(api)/ride/${user?.id}`);
+  const { data: recentRides, loading } = useFetch<Ride[]>(
+    `/(api)/ride/${user?.id}`
+  );
 
   const [hasPermissions, setHasPermissions] = useState(false);
 

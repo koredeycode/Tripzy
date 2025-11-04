@@ -47,7 +47,6 @@ const Map = () => {
   useEffect(() => {
     console.log(markers.length > 0, destinationLatitude, destinationLongitude);
     if (markers.length > 0 && destinationLatitude && destinationLongitude) {
-      ("calculating driver times");
       calculateDriverTimes({
         markers,
         userLongitude,
@@ -55,7 +54,7 @@ const Map = () => {
         destinationLatitude,
         destinationLongitude,
       }).then((drivers) => {
-        setDrivers(drivers as MarkerData[]);
+        setDrivers(drivers as unknown as MarkerData[]);
       });
     }
     // console.log({ driver: drivers[0] });
