@@ -9,16 +9,16 @@ export async function POST(request: Request) {
   try {
     console.log(process.env.DATABASE_URL);
     const sql = neon(process.env.DATABASE_URL!);
-    const { name, email, clerkId } = await request.json();
+    const { first_name, last_name, email, clerkId } = await request.json();
 
-    if (!name || !email || !clerkId) {
+    if (!first_name || !last_name || !email || !clerkId) {
       return Response.json(
         { error: "Missing required fields" },
         { status: 400 }
       );
     }
     const response = await sql`
-  INSERT INTO users (name, email, clerk_id) VALUES (${name}, ${email}, ${clerkId})
+  INSERT INTO users (first_name, last_name, email, clerk_id) VALUES (${first_name}, ${last_name}, ${email}, ${clerkId})
   `;
     return new Response(JSON.stringify({ response }), { status: 201 });
   } catch (error) {

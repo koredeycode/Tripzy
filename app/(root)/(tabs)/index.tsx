@@ -136,8 +136,8 @@ export default function Index() {
 
   const [hasPermissions, setHasPermissions] = useState(false);
 
-  const handleSignOut = () => {
-    signOut();
+  const handleSignOut = async () => {
+    await signOut();
     router.replace("/(auth)/sign-in");
   };
 

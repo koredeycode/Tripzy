@@ -1,41 +1,15 @@
 import { icons } from "@/constants";
 import { fetchAPI } from "@/lib/fetch";
-import { useSSO, useUser } from "@clerk/clerk-expo";
+import { useSSO } from "@clerk/clerk-expo";
 import * as AuthSession from "expo-auth-session";
 import { router } from "expo-router";
-import React, { useCallback, useEffect } from "react";
+import React, { useCallback } from "react";
 import { Image, Text, View } from "react-native";
 import CustomButton from "./CustomButton";
 
 const OAuth = () => {
   // Use the `useSSO()` hook to access the `startSSOFlow()` method
   const { startSSOFlow } = useSSO();
-  const { user } = useUser();
-
-  // Automatically save user once logged in
-  useEffect(() => {
-    if (user) {
-      const saveUserToDB = async () => {
-        console.log({ user });
-        try {
-          // TODO: Create a database user
-          await fetchAPI("/(api)/user", {
-            method: "POST",
-            body: JSON.stringify({
-              name: `${user.firstName} ${user.lastName}`,
-              email: user.primaryEmailAddress,
-              clerkId: user.id,
-            }),
-          });
-          console.log("User saved successfully!");
-        } catch (err) {
-          console.error("Error saving user:", err);
-        }
-      };
-
-      saveUserToDB();
-    }
-  }, [user]);
 
   const handleGoogleSignIn = useCallback(async () => {
     try {
@@ -70,7 +44,8 @@ const OAuth = () => {
           await fetchAPI("/(api)/user", {
             method: "POST",
             body: JSON.stringify({
-              name: `${signUp.firstName} ${signUp.lastName}`,
+              first_name: signUp.firstName,
+              last_name: signUp.lastName,
               email: signUp.emailAddress,
               clerkId: signUp.createdUserId,
             }),

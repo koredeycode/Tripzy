@@ -14,7 +14,8 @@ const SignUp = () => {
   const { isLoaded, signUp, setActive } = useSignUp();
 
   const [form, setForm] = useState({
-    name: "",
+    first_name: "",
+    last_name: "",
     email: "",
     password: "",
   });
@@ -35,6 +36,8 @@ const SignUp = () => {
       await signUp.create({
         emailAddress: form.email,
         password: form.password,
+        firstName: form.first_name,
+        lastName: form.last_name,
       });
 
       // Send user an email with verification code
@@ -68,7 +71,8 @@ const SignUp = () => {
         await fetchAPI("/(api)/user", {
           method: "POST",
           body: JSON.stringify({
-            name: form.name,
+            first_name: form.first_name,
+            last_name: form.last_name,
             email: form.email,
             clerkId: signUpAttempt.createdUserId,
           }),
@@ -101,20 +105,29 @@ const SignUp = () => {
   return (
     <ScrollView className="flex-1 bg-white">
       <View className="flex-1 bg-white">
-        <View className="relative w-full h-[250px]">
-          <Image source={images.signUpCar} className="z-0 w-full h-[250px]" />
+        <View className="relative w-full h-[200px]">
+          <Image source={images.signUpCar} className="z-0 w-full h-[200px]" />
           <Text className="absolute text-2xl text-black font-jakarta-semibold bottom-5 left-5">
             Create Your Account
           </Text>
         </View>
         <View className="p-5">
           <InputField
-            label={"Name"}
-            placeholder="Enter your name"
+            label={"First Name"}
+            placeholder="Enter your first name"
             icon={icons.person}
-            value={form.name}
+            value={form.first_name}
             onChangeText={(value) => {
-              setForm({ ...form, name: value });
+              setForm({ ...form, first_name: value });
+            }}
+          />
+          <InputField
+            label={"Last Name"}
+            placeholder="Enter your last name"
+            icon={icons.person}
+            value={form.last_name}
+            onChangeText={(value) => {
+              setForm({ ...form, last_name: value });
             }}
           />
           <InputField
@@ -146,7 +159,7 @@ const SignUp = () => {
 
           <Link
             href="/(auth)/sign-in"
-            className="mt-10 text-lg text-center text-general-200"
+            className="mt-5 text-lg text-center text-general-200"
           >
             <Text>Already have an account? </Text>
             <Text className="text-primary-500">Log In</Text>
