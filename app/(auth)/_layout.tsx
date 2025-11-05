@@ -11,7 +11,7 @@ export default function AuthLayout() {
 
   if (!isLoaded) {
     return (
-      <SafeAreaView>
+      <SafeAreaView className="flex items-center justify-center h-full">
         <ActivityIndicator size="large" color={"#000"} />
       </SafeAreaView>
     );
