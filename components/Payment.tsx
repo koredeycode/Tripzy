@@ -6,7 +6,7 @@ import { useAuth } from "@clerk/clerk-expo";
 import { useStripe } from "@stripe/stripe-react-native";
 import { router } from "expo-router";
 import React, { useEffect, useState } from "react";
-import { Alert, Image, Text, View } from "react-native";
+import { ActivityIndicator, Alert, Image, Text, View } from "react-native";
 import ReactNativeModal from "react-native-modal";
 import CustomButton from "./CustomButton";
 
@@ -18,7 +18,7 @@ const Payment = ({
   rideTime,
 }: PaymentProps) => {
   const { initPaymentSheet, presentPaymentSheet } = useStripe();
-  // const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const {
     userAddress,
@@ -40,7 +40,7 @@ const Payment = ({
         body: JSON.stringify({
           name: fullName || email.split("@")[0],
           email,
-          amount: 5,
+          amount,
         }),
       }
     );
@@ -53,6 +53,7 @@ const Payment = ({
   };
 
   const initializePaymentSheet = async () => {
+    setLoading(true);
     const { paymentIntent, ephemeralKey, customer } =
       await fetchPaymentSheetParams();
 
@@ -73,6 +74,7 @@ const Payment = ({
       console.log(error);
       // setLoading(true);
     }
+    setLoading(false);
   };
 
   const openPaymentSheet = async () => {
@@ -109,11 +111,15 @@ const Payment = ({
 
   return (
     <View>
-      <CustomButton
-        title="Confirm Ride"
-        className="my-10"
-        onPress={openPaymentSheet}
-      />
+      {loading ? (
+        <ActivityIndicator className="my-10" color={"#000"} />
+      ) : (
+        <CustomButton
+          title="Confirm Ride"
+          className="my-10"
+          onPress={openPaymentSheet}
+        />
+      )}
       <ReactNativeModal
         isVisible={success}
         onBackdropPress={() => setSuccess(false)}

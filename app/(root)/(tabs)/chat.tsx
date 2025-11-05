@@ -15,7 +15,7 @@ const Chat = () => {
             className="w-full h-40"
             resizeMode="contain"
           />
-          <Text className="mt-3 text-3xl font-JakartaBold">
+          <Text className="mt-3 text-3xl font-jakarta-bold">
             No Messages Yet
           </Text>
           <Text className="mt-2 text-base text-center px-7">

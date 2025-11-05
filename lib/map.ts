@@ -168,13 +168,13 @@ export const calculateDriverTimes = async ({
         dataToDestination.features?.[0]?.properties?.summary?.duration ?? 0;
 
       // Step 3: Calculate total time (in minutes) and price
-      // const totalTime = (timeToUser + timeToDestination) / 60;
-      // const price = (totalTime * 0.5).toFixed(2);
+      const totalTime = (timeToUser + timeToDestination) / 60;
+      const price = (totalTime * 0.5).toFixed(2);
 
       console.log({ timeToUser, timeToDestination });
 
-      const totalTime = 60;
-      const price = 5;
+      // const totalTime = 60;
+      // const price = 5;
 
       return { ...marker, time: totalTime, price };
     });

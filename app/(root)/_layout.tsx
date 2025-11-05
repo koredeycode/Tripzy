@@ -4,7 +4,7 @@ import React from "react";
 import { ActivityIndicator } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-export default function AuthLayout() {
+export default function RootLayout() {
   const { isSignedIn, userId, isLoaded } = useAuth();
 
   console.log({ isSignedIn, userId });
@@ -17,8 +17,8 @@ export default function AuthLayout() {
     );
   }
 
-  if (isSignedIn) {
-    return <Redirect href={"/(root)/(tabs)"} />;
+  if (!isSignedIn) {
+    return <Redirect href={"/(auth)/sign-in"} />;
   }
   return <Slot />;
 }

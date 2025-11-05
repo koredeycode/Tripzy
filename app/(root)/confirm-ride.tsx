@@ -4,7 +4,7 @@ import RideLayout from "@/components/RideLayout";
 import { useDriverStore } from "@/store";
 import { router } from "expo-router";
 import React from "react";
-import { FlatList, View } from "react-native";
+import { Alert, FlatList, View } from "react-native";
 
 const ConfirmRide = () => {
   const { drivers, selectedDriver, setSelectedDriver } = useDriverStore();
@@ -24,7 +24,13 @@ const ConfirmRide = () => {
           <View className="mx-5 mt-10">
             <CustomButton
               title="Select Ride"
-              onPress={() => router.push("/(root)/book-ride")}
+              onPress={() => {
+                if (!selectedDriver) {
+                  Alert.alert("Error", "Please select a driver.");
+                  return;
+                }
+                router.push("/(root)/book-ride");
+              }}
             />
           </View>
         )}

@@ -35,6 +35,7 @@ const ORSMapViewDirections: React.FC<ORSMapViewDirectionsProps> = ({
 
       try {
         const url = `https://api.openrouteservice.org/v2/directions/${profile}?api_key=${apiKey}&start=${origin.longitude},${origin.latitude}&end=${destination.longitude},${destination.latitude}`;
+        console.log({ url });
         const res = await fetch(url);
         const json = await res.json();
 

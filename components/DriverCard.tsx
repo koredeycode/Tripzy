@@ -20,35 +20,29 @@ const DriverCard = ({ item, selected, setSelected }: DriverCardProps) => {
 
       <View className="flex flex-col items-start justify-center flex-1 mx-3">
         <View className="flex flex-row items-center justify-start mb-1">
-          <Text className="text-lg font-JakartaRegular">{item.title}</Text>
+          <Text className="text-lg font-jakarta">{item.title}</Text>
 
           <View className="flex flex-row items-center ml-2 space-x-1">
             <Image source={icons.star} className="w-3.5 h-3.5" />
-            <Text className="text-sm font-JakartaRegular">4</Text>
+            <Text className="text-sm font-jakarta">4</Text>
           </View>
         </View>
 
         <View className="flex flex-row items-center justify-start">
           <View className="flex flex-row items-center">
             <Image source={icons.dollar} className="w-4 h-4" />
-            <Text className="ml-1 text-sm font-JakartaRegular">
-              ${item.price}
-            </Text>
+            <Text className="ml-1 text-sm font-jakarta">${item.price}</Text>
           </View>
 
-          <Text className="mx-1 text-sm font-JakartaRegular text-general-800">
-            |
+          <Text className="mx-1 text-sm font-jakarta text-general-800">|</Text>
+
+          <Text className="text-sm font-jakarta text-general-800">
+            {formatTime(item.time!)}
           </Text>
 
-          <Text className="text-sm font-JakartaRegular text-general-800">
-            {formatTime(item.time! || 5)}
-          </Text>
+          <Text className="mx-1 text-sm font-jakarta text-general-800">|</Text>
 
-          <Text className="mx-1 text-sm font-JakartaRegular text-general-800">
-            |
-          </Text>
-
-          <Text className="text-sm font-JakartaRegular text-general-800">
+          <Text className="text-sm font-jakarta text-general-800">
             {item.car_seats} seats
           </Text>
         </View>

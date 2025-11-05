@@ -99,7 +99,7 @@ const Map = () => {
           }
         />
       ))}
-      {destinationLatitude && destinationLongitude && (
+      {destinationLatitude && destinationLongitude ? (
         <>
           <Marker
             key={"destination"}
@@ -136,7 +136,7 @@ const Map = () => {
             // onError={(err) => console.error("Route error:", err)}
           />
         </>
-      )}
+      ) : null}
     </MapView>
   );
 };
