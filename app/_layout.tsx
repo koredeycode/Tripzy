@@ -5,8 +5,6 @@ import { SplashScreen, Stack } from "expo-router";
 import { useEffect } from "react";
 import "./globals.css";
 export default function AppLayout() {
-  // const { isLoading, fetchAuthenticatedUser } = useAuthStore();
-
   const [fontsLoaded, error] = useFonts({
     "Jakarta-Bold": require("../assets/fonts/PlusJakartaSans-Bold.ttf"),
     "Jakarta-ExtraBold": require("../assets/fonts/PlusJakartaSans-ExtraBold.ttf"),
@@ -23,11 +21,6 @@ export default function AppLayout() {
     if (fontsLoaded) SplashScreen.hideAsync();
   }, [fontsLoaded, error]);
 
-  // useEffect(() => {
-  //   fetchAuthenticatedUser();
-  // }, []);
-
-  // if (!fontsLoaded || isLoading) return null;
   if (!fontsLoaded) return null;
   return (
     <ClerkProvider tokenCache={tokenCache}>

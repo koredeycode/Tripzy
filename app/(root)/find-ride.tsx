@@ -16,7 +16,6 @@ const FindRide = () => {
   } = useLocationStore();
 
   return (
-    // <SafeAreaView>
     <RideLayout title="Ride" snapPoints={["85%"]}>
       <View className="my-3">
         <Text className="mb-3 text-lg font-jakarta-semibold">From</Text>
@@ -44,7 +43,6 @@ const FindRide = () => {
         className="mt-5"
       />
     </RideLayout>
-    // </SafeAreaView>
   );
 };
 

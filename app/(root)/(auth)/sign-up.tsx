@@ -79,7 +79,7 @@ const SignUp = () => {
         });
         await setActive({ session: signUpAttempt.createdSessionId });
         setVerification({ ...verification, state: "success" });
-        router.replace("/(auth)/sign-in");
+        router.replace("/(root)/(auth)/sign-in");
       } else {
         // If the status is not complete, check why. User may need to
         // complete further steps.
@@ -158,7 +158,7 @@ const SignUp = () => {
           <OAuth />
 
           <Link
-            href="/(auth)/sign-in"
+            href="/(root)/(auth)/sign-in"
             className="mt-5 text-lg text-center text-general-200"
           >
             <Text>Already have an account? </Text>
@@ -220,7 +220,7 @@ const SignUp = () => {
               title="Browse Home"
               onPress={() => {
                 setShowSuccessModal(false);
-                router.push("/(auth)/sign-in");
+                router.push("/(root)/(auth)/sign-in");
               }}
               className="mt-5"
             />
