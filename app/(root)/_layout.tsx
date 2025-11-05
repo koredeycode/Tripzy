@@ -18,7 +18,8 @@ export default function RootLayout() {
   }
 
   if (!isSignedIn) {
-    return <Redirect href={"/(auth)/sign-in"} />;
+    return <Redirect href={"/(root)/(auth)/sign-in"} />;
   }
+
   return <Slot />;
 }
