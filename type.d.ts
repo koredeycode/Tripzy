@@ -97,13 +97,22 @@ export interface PaymentProps {
   rideTime: number;
 }
 
+interface LatLng {
+  latitude: number;
+  longitude: number;
+}
+
 export interface LocationStore {
   userLatitude: number | null;
   userLongitude: number | null;
   userAddress: string | null;
+
   destinationLatitude: number | null;
   destinationLongitude: number | null;
   destinationAddress: string | null;
+
+  coordinates: LatLng[];
+
   setUserLocation: ({
     latitude,
     longitude,
@@ -113,6 +122,7 @@ export interface LocationStore {
     longitude: number;
     address: string;
   }) => void;
+
   setDestinationLocation: ({
     latitude,
     longitude,
@@ -122,6 +132,15 @@ export interface LocationStore {
     longitude: number;
     address: string;
   }) => void;
+
+  fetchRoute: (
+    origin: LatLng,
+    destination: LatLng,
+    apiKey: string,
+    profile?: "driving-car" | "cycling-regular" | "foot-walking"
+  ) => Promise<LatLng[]>;
+
+  clearRoute: () => void;
 }
 
 export interface DriverStore {

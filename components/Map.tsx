@@ -120,12 +120,6 @@ const Map = () => {
             strokeWidth={2}
           /> */}
           <ORSMapViewDirections
-            origin={{ latitude: userLatitude, longitude: userLongitude }}
-            destination={{
-              latitude: destinationLatitude,
-              longitude: destinationLongitude,
-            }}
-            apiKey={process.env.EXPO_PUBLIC_ORS_API_KEY!}
             strokeColor="#0286ff"
             strokeWidth={3}
             // onReady={({ distance, duration }) => {
