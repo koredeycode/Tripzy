@@ -12,12 +12,12 @@ const Onboarding = () => {
 
   const isLastSlide = activeIndex === onboarding.length - 1;
   return (
-    <SafeAreaView className="flex h-full items-center justify-between bg-white">
+    <SafeAreaView className="flex items-center justify-between h-full px-5 bg-white">
       <TouchableOpacity
         onPress={() => {
           router.replace("/(auth)/sign-up");
         }}
-        className="w-full flex justify-end items-end p-5"
+        className="flex items-end justify-end w-full p-5"
       >
         <Text className="text-md font-jakarta-bold text-primary-900">Skip</Text>
       </TouchableOpacity>
@@ -37,8 +37,8 @@ const Onboarding = () => {
               resizeMode="contain"
               className="w-full h-[300px]"
             />
-            <View className="flex flex-row item-center justify-center w-full mt-10">
-              <Text className="text-black text-3xl font-bold text-center">
+            <View className="flex flex-row justify-center w-full mt-10 item-center">
+              <Text className="text-3xl font-bold text-center text-black">
                 {item.title}
               </Text>
             </View>
@@ -55,7 +55,7 @@ const Onboarding = () => {
             ? router.replace("/(auth)/sign-up")
             : swiperRef.current?.scrollBy(1)
         }
-        className={"w-11/12 mt-10"}
+        className={"w-11/12 mt-10 mb-5"}
       />
     </SafeAreaView>
   );
