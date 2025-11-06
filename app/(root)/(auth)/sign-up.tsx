@@ -232,8 +232,3 @@ const SignUp = () => {
 };
 
 export default SignUp;
-{
-  /* <Text>SignUp</Text>
-<Button title="Sign In" onPress={() => router.push("/sign-in")} />
-<Button title="Onboarding" onPress={() => router.push("/onboarding")} /> */
-}

@@ -85,6 +85,8 @@ const Map = () => {
       showsUserLocation={true}
       userInterfaceStyle="light"
       style={{ width: "100%", height: "100%" }}
+      showsTraffic={true}
+      userLocationUpdateInterval={300000 / 5} //1 mins
     >
       {markers.map((marker) => (
         <Marker
@@ -119,16 +121,7 @@ const Map = () => {
             strokeColor="#0286ff"
             strokeWidth={2}
           /> */}
-          <ORSMapViewDirections
-            strokeColor="#0286ff"
-            strokeWidth={3}
-            // onReady={({ distance, duration }) => {
-            //   console.log(
-            //     `Distance: ${distance / 1000} km, Duration: ${duration / 60} min`
-            //   );
-            // }}
-            // onError={(err) => console.error("Route error:", err)}
-          />
+          <ORSMapViewDirections strokeColor="#0286ff" strokeWidth={3} />
         </>
       ) : null}
     </MapView>

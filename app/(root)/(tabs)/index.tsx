@@ -34,14 +34,14 @@ export default function Index() {
     router.replace("/(root)/(auth)/sign-in");
   };
 
-  const handleDestinationPress = (location: {
+  const handleDestinationPress = async (location: {
     latitude: number;
     longitude: number;
     address: string;
   }) => {
-    setDestinationLocation(location);
+    await setDestinationLocation(location);
 
-    router.push(`/find-ride`);
+    router.push(`/(root)/find-ride`);
   };
 
   useEffect(() => {
@@ -97,10 +97,7 @@ export default function Index() {
           <>
             <View className="flex flex-row items-center justify-between my-5">
               <Text className="text-2xl capitalize font-jakarta-extrabold">
-                Welcome{" "}
-                {user?.firstName ||
-                  user?.emailAddresses[0].emailAddress.split("@")[0]}{" "}
-                👋
+                Welcome {user?.firstName} 👋
               </Text>
               <TouchableOpacity
                 onPress={handleSignOut}

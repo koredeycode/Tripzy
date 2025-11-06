@@ -81,7 +81,7 @@ const SignIn = () => {
           <OAuth />
 
           <Link
-            href="/(auth)/sign-up"
+            href="/(root)/(auth)/sign-up"
             className="mt-10 text-lg text-center text-general-200"
           >
             <Text>Don't have an account? </Text>

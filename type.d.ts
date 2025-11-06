@@ -131,7 +131,7 @@ export interface LocationStore {
     latitude: number;
     longitude: number;
     address: string;
-  }) => void;
+  }) => Promise<void>;
 
   fetchRoute: (
     origin: LatLng,
