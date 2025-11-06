@@ -1,50 +1,108 @@
-# Welcome to your Expo app 👋
+# Tripzy
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+<p align="left">
+  <img alt="Expo" src="https://img.shields.io/badge/Expo-000000?style=for-the-badge&logo=expo&logoColor=white" />
+  <img alt="React Native" src="https://img.shields.io/badge/React%20Native-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" />
+  <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white" />
+  <img alt="NativeWind" src="https://img.shields.io/badge/NativeWind-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white" />
+  <img alt="React Navigation" src="https://img.shields.io/badge/React%20Navigation-000000?style=for-the-badge&logo=react&logoColor=white" />
+  <img alt="Zustand" src="https://img.shields.io/badge/Zustand-5C4033?style=for-the-badge" />
+  <img alt="Stripe" src="https://img.shields.io/badge/Stripe-635BFF?style=for-the-badge&logo=stripe&logoColor=white" />
+  <img alt="Clerk" src="https://img.shields.io/badge/Clerk-5B34DA?style=for-the-badge&logo=clerk&logoColor=white" />
+  <img alt="Google Maps" src="https://img.shields.io/badge/Google%20Maps-4285F4?style=for-the-badge&logo=googlemaps&logoColor=white" />
+  <img alt="ESLint" src="https://img.shields.io/badge/ESLint-4B32C3?style=for-the-badge&logo=eslint&logoColor=white" />
+  <img alt="Prettier" src="https://img.shields.io/badge/Prettier-F7B93E?style=for-the-badge&logo=prettier&logoColor=000" />
+  <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/github/license/koredeycode/Tripzy?style=for-the-badge" /></a>
+  <a href="https://github.com/koredeycode/Tripzy/graphs/contributors"><img alt="Contributors" src="https://img.shields.io/github/contributors/koredeycode/Tripzy?style=for-the-badge" /></a>
+</p>
 
-## Get started
+A modern, cross‑platform trip planning experience built with Expo + React Native. Tripzy helps users discover places, search destinations, view routes on an interactive map, and handle authentication and payments for bookings.
 
-1. Install dependencies
+---
 
-   ```bash
-   npm install
-   ```
+## Table of Contents
+- [Introduction](#introduction)
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Quick Start](#quick-start)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+  - [Running the App](#running-the-app)
+  - [Environment Variables](#environment-variables)
+- [Available Scripts](#available-scripts)
+- [License](#license)
+- [Contributors](#contributors)
 
-2. Start the app
+## Introduction
+Tripzy is a mobile app designed to make travel planning simple and delightful. Search and explore destinations using Google Places, preview routes and travel times on maps, and securely authenticate with Clerk. Payments are powered by Stripe, and the UI is styled with Tailwind (via NativeWind), ensuring a responsive, accessible experience on Android, iOS, and the web.
 
-   ```bash
-   npx expo start
-   ```
+## Features
+- Location search with Google Places Autocomplete
+- Interactive maps with turn‑by‑turn directions
+- Secure authentication via Clerk
+- Payments and checkout flows with Stripe
+- Smooth navigation with React Navigation and Expo Router
+- Modern styling with TailwindCSS (NativeWind)
+- Global state management with Zustand
+- Works on Android, iOS, and Web via Expo
 
-In the output, you'll find options to open the app in a
+## Tech Stack
+- App: Expo, React Native, TypeScript
+- Routing & Navigation: Expo Router, React Navigation
+- UI: TailwindCSS (NativeWind), @expo/vector-icons
+- Maps: react-native-maps, react-native-maps-directions, Google Places Autocomplete
+- Auth: Clerk
+- Payments: Stripe
+- State: Zustand
+- Tooling: ESLint, Prettier
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## Quick Start
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+### Prerequisites
+- Node.js 18+ and npm
+- Expo CLI (installed automatically via npx)
+- One of: Expo Go app, Android Emulator, or iOS Simulator
 
-## Get a fresh project
-
-When you're ready, run:
-
+### Installation
 ```bash
-npm run reset-project
+npm install
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### Running the App
+```bash
+# Start the development server
+npx expo start
 
-## Learn more
+# Or directly launch a platform
+npm run android
+npm run ios
+npm run web
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+### Environment Variables
+Create a `.env` (or your preferred env management) and set the following. Expo will expose variables prefixed with `EXPO_PUBLIC_` to the client app.
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+```bash
+EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY=pk_live_...
+EXPO_PUBLIC_GOOGLE_MAPS_API_KEY=AIza...
+EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_live_...
+```
 
-## Join the community
+Reference these in code via `process.env.EXPO_PUBLIC_*`.
 
-Join our community of developers creating universal apps.
+## Available Scripts
+- `npm start` – Start the Expo dev server
+- `npm run android` – Run on Android
+- `npm run ios` – Run on iOS
+- `npm run web` – Run on Web
+- `npm run lint` – Lint the codebase
+- `npm run reset-project` – Reset to a fresh project layout (moves example code)
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## License
+This project is licensed under the MIT License. See `LICENSE` for details.
+
+## Contributors
+Contributions are welcome! Feel free to submit issues and pull requests.
+
+- Your Name (@your-handle)
+- See the contributors page of the repository for more
