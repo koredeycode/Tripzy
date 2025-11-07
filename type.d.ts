@@ -102,36 +102,31 @@ interface LatLng {
   longitude: number;
 }
 
-export interface LocationStore {
-  userLatitude: number | null;
-  userLongitude: number | null;
-  userAddress: string | null;
+export interface Location {
+  latitude: number;
+  longitude: number;
+  address: string;
+}
 
-  destinationLatitude: number | null;
-  destinationLongitude: number | null;
-  destinationAddress: string | null;
+export interface LocationStore {
+  // userLatitude: number | null;
+  // userLongitude: number | null;
+  // userAddress: string | null;
+
+  userLocation: Location | null;
+
+  // destinationLatitude: number | null;
+  // destinationLongitude: number | null;
+  // destinationAddress: string | null;
+
+  destinationLocation: Location | null;
+  tempDestinationLocation: Location | null;
 
   coordinates: LatLng[];
 
-  setUserLocation: ({
-    latitude,
-    longitude,
-    address,
-  }: {
-    latitude: number;
-    longitude: number;
-    address: string;
-  }) => void;
-
-  setDestinationLocation: ({
-    latitude,
-    longitude,
-    address,
-  }: {
-    latitude: number;
-    longitude: number;
-    address: string;
-  }) => Promise<void>;
+  setUserLocation: (location: Location) => void;
+  setDestinationLocation: (location: Location) => Promise<void>;
+  setTempDestinationLocation: (location: Location) => Promise<void>;
 
   fetchRoute: (
     origin: LatLng,

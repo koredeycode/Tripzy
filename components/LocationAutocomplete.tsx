@@ -147,7 +147,7 @@ const LocationAutocomplete = ({
         <TextInput
           value={query}
           onChangeText={handleInputChange}
-          placeholder={initialLocation ?? "Where do you want to go?"}
+          placeholder={initialLocation ?? "Search where you want to go?"}
           className="flex-1 py-3 pl-10 pr-4 text-base rounded-full"
           placeholderTextColor="gray"
           style={{

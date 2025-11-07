@@ -10,57 +10,69 @@ import { useDriverStore, useLocationStore } from "@/store";
 import { Driver, MarkerData } from "@/type";
 import React, { useEffect, useState } from "react";
 import { ActivityIndicator, Text, View } from "react-native";
-import MapView, { Marker, PROVIDER_DEFAULT } from "react-native-maps";
+import MapView, {
+  MapPressEvent,
+  Marker,
+  PROVIDER_DEFAULT,
+} from "react-native-maps";
 
-const Map = () => {
+const Map = ({
+  onPress,
+}: {
+  onPress?: (event: MapPressEvent) => Promise<void>;
+}) => {
   const { data: drivers, loading, error } = useFetch<Driver[]>("/(api)/driver");
 
-  const {
-    userLatitude,
-    userLongitude,
-    destinationLatitude,
-    destinationLongitude,
-  } = useLocationStore();
+  const { userLocation, destinationLocation, tempDestinationLocation } =
+    useLocationStore();
 
   const { selectedDriver, setDrivers } = useDriverStore();
   const [markers, setMarkers] = useState<MarkerData[]>([]);
 
   const region = calculateRegion({
-    userLatitude,
-    userLongitude,
-    destinationLatitude,
-    destinationLongitude,
+    userLatitude: userLocation?.latitude!,
+    userLongitude: userLocation?.longitude!,
+    destinationLatitude: destinationLocation?.latitude!,
+    destinationLongitude: destinationLocation?.longitude!,
   });
 
   useEffect(() => {
     if (Array.isArray(drivers)) {
-      if (!userLatitude || !userLongitude) return;
+      if (!userLocation?.latitude || !userLocation.longitude) return;
       const newMarkers = generateMarkersFromData({
         data: drivers,
-        userLatitude,
-        userLongitude,
+        userLatitude: userLocation.latitude,
+        userLongitude: userLocation.longitude,
       });
       setMarkers(newMarkers);
     }
-  }, [drivers, userLatitude, userLongitude]);
+  }, [drivers, userLocation]);
 
   useEffect(() => {
-    console.log(markers.length > 0, destinationLatitude, destinationLongitude);
-    if (markers.length > 0 && destinationLatitude && destinationLongitude) {
+    console.log(
+      markers.length > 0,
+      destinationLocation?.latitude,
+      destinationLocation?.longitude
+    );
+    if (
+      markers.length > 0 &&
+      destinationLocation?.latitude &&
+      destinationLocation?.longitude
+    ) {
       calculateDriverTimes({
         markers,
-        userLongitude,
-        userLatitude,
-        destinationLatitude,
-        destinationLongitude,
+        userLatitude: userLocation?.latitude!,
+        userLongitude: userLocation?.longitude!,
+        destinationLatitude: destinationLocation?.latitude!,
+        destinationLongitude: destinationLocation?.longitude!,
       }).then((drivers) => {
         setDrivers(drivers as unknown as MarkerData[]);
       });
     }
     // console.log({ driver: drivers[0] });
-  }, [markers, destinationLatitude, destinationLongitude]);
+  }, [markers, destinationLocation]);
 
-  if (loading || !userLatitude || !userLongitude)
+  if (loading || !userLocation)
     return (
       <View className="flex items-center justify-between w-full">
         <ActivityIndicator size="small" color={"#000"} />
@@ -86,7 +98,8 @@ const Map = () => {
       userInterfaceStyle="light"
       style={{ width: "100%", height: "100%" }}
       showsTraffic={true}
-      userLocationUpdateInterval={300000 / 5} //1 mins
+      userLocationUpdateInterval={300000 / 5} //1
+      onPress={onPress}
     >
       {markers.map((marker) => (
         <Marker
@@ -101,14 +114,33 @@ const Map = () => {
           }
         />
       ))}
-      {destinationLatitude && destinationLongitude ? (
+      {/* {tempDestination && !destinationLocation && (
+        <Marker
+          key={"selected-destination"}
+          coordinate={{
+            latitude: tempDestination.latitude,
+            longitude: tempDestination.longitude,
+          }}
+          title="Selected Destination"
+        >
+          <View className="font-jakarta-extrabold">D</View>
+        </Marker>
+      )} */}
+      {destinationLocation ? (
         <>
           <Marker
             key={"destination"}
-            coordinate={{
-              latitude: destinationLatitude,
-              longitude: destinationLongitude,
-            }}
+            coordinate={
+              tempDestinationLocation
+                ? {
+                    latitude: tempDestinationLocation.latitude,
+                    longitude: tempDestinationLocation.longitude,
+                  }
+                : {
+                    latitude: destinationLocation.latitude,
+                    longitude: destinationLocation.longitude,
+                  }
+            }
             title="Destination"
             image={icons.pin}
           />

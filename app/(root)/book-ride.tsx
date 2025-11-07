@@ -11,7 +11,7 @@ import { StripeProvider } from "@stripe/stripe-react-native";
 
 const BookRide = () => {
   const { user } = useUser();
-  const { userAddress, destinationAddress } = useLocationStore();
+  const { userLocation, destinationLocation } = useLocationStore();
   const { drivers, selectedDriver } = useDriverStore();
 
   const driverDetails = drivers?.filter(
@@ -81,13 +81,15 @@ const BookRide = () => {
           <View className="flex flex-col items-start justify-center w-full mt-5">
             <View className="flex flex-row items-center justify-start w-full py-3 mt-3 border-t border-b border-general-700">
               <Image source={icons.to} className="w-6 h-6" />
-              <Text className="ml-2 text-lg font-jakarta">{userAddress}</Text>
+              <Text className="ml-2 text-lg font-jakarta">
+                {userLocation?.address}
+              </Text>
             </View>
 
             <View className="flex flex-row items-center justify-start w-full py-3 border-b border-general-700">
               <Image source={icons.point} className="w-6 h-6" />
               <Text className="ml-2 text-lg font-jakarta">
-                {destinationAddress}
+                {destinationLocation?.address}
               </Text>
             </View>
           </View>

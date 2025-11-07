@@ -1,37 +1,44 @@
-import { DriverStore, LocationStore, MarkerData } from "@/type";
+import { DriverStore, Location, LocationStore, MarkerData } from "@/type";
 import { create } from "zustand";
 
 export const useLocationStore = create<LocationStore>((set, get) => ({
-  userAddress: null,
-  userLatitude: null,
-  userLongitude: null,
-  destinationLatitude: null,
-  destinationLongitude: null,
-  destinationAddress: null,
+  destinationLocation: null,
+  tempDestinationLocation: null,
+  userLocation: null,
+
   coordinates: [],
 
-  setUserLocation: ({ latitude, longitude, address }) => {
+  setUserLocation: (location: Location) => {
     set({
-      userLatitude: latitude,
-      userLongitude: longitude,
-      userAddress: address,
+      userLocation: location,
     });
   },
 
-  setDestinationLocation: async ({ latitude, longitude, address }) => {
-    const { userLatitude, userLongitude, fetchRoute } = get();
+  setTempDestinationLocation: async (location: Location) => {
+    const { userLocation, fetchRoute } = get();
 
-    set({
-      destinationLatitude: latitude,
-      destinationLongitude: longitude,
-      destinationAddress: address,
-    });
-
-    if (userLatitude && userLongitude) {
+    set({ tempDestinationLocation: location });
+    if (userLocation?.latitude && userLocation?.longitude) {
       const apiKey = process.env.EXPO_PUBLIC_ORS_API_KEY!;
       const route = await fetchRoute(
-        { latitude: userLatitude, longitude: userLongitude },
-        { latitude, longitude },
+        { latitude: userLocation.latitude, longitude: userLocation.longitude },
+        { latitude: location.latitude, longitude: location.longitude },
+        apiKey
+      );
+
+      set({ coordinates: route });
+    }
+  },
+
+  setDestinationLocation: async (location: Location) => {
+    const { userLocation, fetchRoute, coordinates } = get();
+
+    set({ destinationLocation: location });
+    if (userLocation?.latitude && userLocation?.longitude) {
+      const apiKey = process.env.EXPO_PUBLIC_ORS_API_KEY!;
+      const route = await fetchRoute(
+        { latitude: userLocation.latitude, longitude: userLocation.longitude },
+        { latitude: location.latitude, longitude: location.longitude },
         apiKey
       );
 

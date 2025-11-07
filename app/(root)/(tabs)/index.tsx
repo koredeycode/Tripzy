@@ -1,12 +1,14 @@
+import CustomButton from "@/components/CustomButton";
 import LocationAutocomplete from "@/components/LocationAutocomplete";
 import Map from "@/components/Map";
+import NomTextInput from "@/components/NomTextInput";
 import RideCard from "@/components/RideCard";
 import { icons, images } from "@/constants";
 import { useFetch } from "@/lib/fetch";
 import { useLocationStore } from "@/store";
-import { Ride } from "@/type";
+import { Location, Ride } from "@/type";
 import { useAuth, useUser } from "@clerk/clerk-expo";
-import * as Location from "expo-location";
+import * as ExpoLocation from "expo-location";
 import { router } from "expo-router";
 import { useEffect, useState } from "react";
 import {
@@ -17,10 +19,17 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import { MapPressEvent } from "react-native-maps";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Index() {
-  const { setUserLocation, setDestinationLocation } = useLocationStore();
+  const {
+    userLocation,
+    tempDestinationLocation,
+    setUserLocation,
+    setDestinationLocation,
+    setTempDestinationLocation,
+  } = useLocationStore();
   const { user } = useUser();
   const { signOut } = useAuth();
   const { data: recentRides, loading } = useFetch<Ride[]>(
@@ -34,26 +43,54 @@ export default function Index() {
     router.replace("/(root)/(auth)/sign-in");
   };
 
-  const handleDestinationPress = async (location: {
-    latitude: number;
-    longitude: number;
-    address: string;
-  }) => {
-    await setDestinationLocation(location);
+  const handleMapPress = async (event: MapPressEvent) => {
+    console.log("eventAction", event.nativeEvent.action);
+    const { latitude, longitude } = event.nativeEvent.coordinate;
+    const pressedAddress = await ExpoLocation.reverseGeocodeAsync({
+      latitude,
+      longitude,
+    });
 
+    const locationInfo = pressedAddress[0];
+
+    console.log({ locationInfo });
+    await setTempDestinationLocation({
+      latitude,
+      longitude,
+      address:
+        locationInfo.formattedAddress ||
+        `${locationInfo.name}, ${locationInfo.region}`,
+    });
+  };
+
+  const handleDestinationPress = async (location: Location) => {
+    await setTempDestinationLocation(location);
+  };
+
+  const handleStartRide = async () => {
+    console.log("start ride start");
+    if (!tempDestinationLocation) return;
+
+    await setDestinationLocation(tempDestinationLocation);
+    console.log("start ride end");
     router.push(`/(root)/find-ride`);
   };
 
   useEffect(() => {
     const requestLocation = async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
+      let { status } = await ExpoLocation.requestForegroundPermissionsAsync();
       if (status !== "granted") {
         setHasPermissions(false);
         return;
       }
-      let location = await Location.getCurrentPositionAsync();
+      let location = await ExpoLocation.getCurrentPositionAsync();
 
-      const address = await Location.reverseGeocodeAsync({
+      console.log({
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      });
+
+      const address = await ExpoLocation.reverseGeocodeAsync({
         latitude: location.coords?.latitude,
         longitude: location.coords?.longitude,
       });
@@ -68,6 +105,7 @@ export default function Index() {
     };
     requestLocation();
   }, []);
+
   return (
     <SafeAreaView className="">
       <FlatList
@@ -114,11 +152,55 @@ export default function Index() {
             <LocationAutocomplete onSelect={handleDestinationPress} />
             <>
               <Text className="mt-5 text-xl font-jakarta-bold">
-                Your Current Location
+                Or select on map
               </Text>
               <View className="flex flex-row items-center justify-center h-[300px]">
-                <Map />
+                <Map onPress={handleMapPress} />
               </View>
+              {/* From–To Section */}
+              {/* {tempDestinationLocation && userLocation && ( */}
+              {userLocation && (
+                <View className="p-4 mt-4 bg-white shadow-md rounded-2xl">
+                  <View className="my-3">
+                    <Text className="mb-3 text-lg font-jakarta-semibold">
+                      From
+                    </Text>
+                    <NomTextInput
+                      handlePress={() => {}}
+                      icon={icons.target}
+                      initialLocation={userLocation?.address}
+                      containerStyle="bg-neutral-100"
+                      textInputBackgroundColor="#f5f5f5"
+                    />
+                  </View>
+                  {tempDestinationLocation && (
+                    <>
+                      <View className="my-3">
+                        <Text className="mb-3 text-lg font-jakarta-semibold">
+                          To
+                        </Text>
+                        <NomTextInput
+                          // handlePress={(location) => setDestinationLocation(location)}
+                          handlePress={() => {}}
+                          icon={icons.map}
+                          initialLocation={
+                            tempDestinationLocation
+                              ? tempDestinationLocation?.address
+                              : "Select Destination Address"
+                          }
+                          containerStyle="bg-neutral-100"
+                          textInputBackgroundColor="transparent"
+                        />
+                      </View>
+                      <CustomButton
+                        title="Start Ride"
+                        onPress={handleStartRide}
+                      />
+                    </>
+                  )}
+                </View>
+              )}
+              {/* )} */}
             </>
             <Text className="mt-5 text-xl font-jakarta-bold">Recent Rides</Text>
           </>

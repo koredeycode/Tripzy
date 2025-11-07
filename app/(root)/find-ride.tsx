@@ -9,8 +9,8 @@ import { Text, View } from "react-native";
 
 const FindRide = () => {
   const {
-    userAddress,
-    destinationAddress,
+    userLocation,
+    destinationLocation,
     setDestinationLocation,
     setUserLocation,
   } = useLocationStore();
@@ -22,7 +22,7 @@ const FindRide = () => {
         <NomTextInput
           handlePress={(location) => setUserLocation(location)}
           icon={icons.target}
-          initialLocation={userAddress!}
+          initialLocation={userLocation?.address}
           containerStyle="bg-neutral-100"
           textInputBackgroundColor="#f5f5f5"
         />
@@ -32,7 +32,7 @@ const FindRide = () => {
         <NomTextInput
           handlePress={(location) => setDestinationLocation(location)}
           icon={icons.map}
-          initialLocation={destinationAddress!}
+          initialLocation={destinationLocation?.address}
           containerStyle="bg-neutral-100"
           textInputBackgroundColor="transparent"
         />
