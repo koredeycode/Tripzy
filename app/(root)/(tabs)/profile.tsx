@@ -1,11 +1,33 @@
+import CustomButton from "@/components/CustomButton";
 import InputField from "@/components/InputField";
 import { useUser } from "@clerk/clerk-expo";
-import { Image, ScrollView, Text, View } from "react-native";
+import { Pencil } from "lucide-react-native";
+import { useState } from "react";
+import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const Profile = () => {
   const { user } = useUser();
 
+  const [editable, setEditable] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [firstName, setFirstName] = useState(user?.firstName || "");
+  const [lastName, setLastName] = useState(user?.lastName || "");
+
+  const handleUpdate = async () => {
+    try {
+      setLoading(true);
+      const newUser = await user?.update({
+        firstName,
+        lastName,
+      });
+    } catch (error) {
+      console.error("Update failed:", error);
+    } finally {
+      setLoading(false);
+      setEditable(false);
+    }
+  };
   return (
     <SafeAreaView className="flex-1">
       <ScrollView
@@ -15,13 +37,21 @@ const Profile = () => {
         <Text className="my-5 text-2xl font-jakarta-bold">Your profile</Text>
 
         <View className="flex items-center justify-center my-5">
-          <Image
-            source={{
-              uri: user?.externalAccounts[0]?.imageUrl ?? user?.imageUrl,
-            }}
-            style={{ width: 110, height: 110, borderRadius: 110 / 2 }}
-            className=" rounded-full h-[110px] w-[110px] border-[3px] border-white shadow-sm shadow-neutral-300"
-          />
+          <View className="relative">
+            <Image
+              source={{
+                uri: user?.externalAccounts[0]?.imageUrl ?? user?.imageUrl,
+              }}
+              style={{ width: 110, height: 110, borderRadius: 110 / 2 }}
+              className=" rounded-full h-[110px] w-[110px] border-[3px] border-white shadow-sm shadow-neutral-300"
+            />
+            <TouchableOpacity
+              className="absolute bottom-0 p-2 bg-white rounded-full shadow-md right-2"
+              onPress={() => setEditable((prev) => !prev)}
+            >
+              <Pencil size={18} color="#111" />
+            </TouchableOpacity>
+          </View>
         </View>
 
         <View className="flex flex-col items-start justify-center px-5 py-3 bg-white rounded-lg shadow-sm shadow-neutral-300">
@@ -31,7 +61,9 @@ const Profile = () => {
               placeholder={user?.firstName || "Not Found"}
               containerStyle="w-full"
               inputStyle="p-3.5"
-              editable={false}
+              editable={editable}
+              value={firstName}
+              onChangeText={setFirstName}
             />
 
             <InputField
@@ -39,7 +71,9 @@ const Profile = () => {
               placeholder={user?.lastName || "Not Found"}
               containerStyle="w-full"
               inputStyle="p-3.5"
-              editable={false}
+              editable={editable}
+              value={lastName}
+              onChangeText={setLastName}
             />
 
             <InputField
@@ -60,6 +94,14 @@ const Profile = () => {
               editable={false}
             />
           </View>
+        </View>
+
+        <View className="mt-5">
+          <CustomButton
+            disabled={loading || !editable}
+            title="Update Profile"
+            onPress={handleUpdate}
+          />
         </View>
       </ScrollView>
     </SafeAreaView>

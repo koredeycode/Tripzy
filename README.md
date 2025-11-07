@@ -21,6 +21,7 @@ A modern, cross‑platform trip planning experience built with Expo + React Nati
 ---
 
 ## Table of Contents
+
 - [Introduction](#introduction)
 - [Features](#features)
 - [Tech Stack](#tech-stack)
@@ -34,9 +35,11 @@ A modern, cross‑platform trip planning experience built with Expo + React Nati
 - [Contributors](#contributors)
 
 ## Introduction
+
 Tripzy is a mobile app designed to make travel planning simple and delightful. Search and explore destinations using Google Places, preview routes and travel times on maps, and securely authenticate with Clerk. Payments are powered by Stripe, and the UI is styled with Tailwind (via NativeWind), ensuring a responsive, accessible experience on Android, iOS, and the web.
 
 ## Features
+
 - Location search with Google Places Autocomplete
 - Interactive maps with turn‑by‑turn directions
 - Secure authentication via Clerk
@@ -47,6 +50,7 @@ Tripzy is a mobile app designed to make travel planning simple and delightful. S
 - Works on Android, iOS, and Web via Expo
 
 ## Tech Stack
+
 - App: Expo, React Native, TypeScript
 - Routing & Navigation: Expo Router, React Navigation
 - UI: TailwindCSS (NativeWind), @expo/vector-icons
@@ -59,16 +63,19 @@ Tripzy is a mobile app designed to make travel planning simple and delightful. S
 ## Quick Start
 
 ### Prerequisites
+
 - Node.js 18+ and npm
 - Expo CLI (installed automatically via npx)
 - One of: Expo Go app, Android Emulator, or iOS Simulator
 
 ### Installation
+
 ```bash
 npm install
 ```
 
 ### Running the App
+
 ```bash
 # Start the development server
 npx expo start
@@ -80,6 +87,7 @@ npm run web
 ```
 
 ### Environment Variables
+
 Create a `.env` (or your preferred env management) and set the following. Expo will expose variables prefixed with `EXPO_PUBLIC_` to the client app.
 
 ```bash
@@ -91,6 +99,7 @@ EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_live_...
 Reference these in code via `process.env.EXPO_PUBLIC_*`.
 
 ## Available Scripts
+
 - `npm start` – Start the Expo dev server
 - `npm run android` – Run on Android
 - `npm run ios` – Run on iOS
@@ -99,9 +108,11 @@ Reference these in code via `process.env.EXPO_PUBLIC_*`.
 - `npm run reset-project` – Reset to a fresh project layout (moves example code)
 
 ## License
+
 This project is licensed under the MIT License. See `LICENSE` for details.
 
 ## Contributors
+
 Contributions are welcome! Feel free to submit issues and pull requests.
 
 - Your Name (@your-handle)
