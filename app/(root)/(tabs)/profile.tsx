@@ -17,7 +17,7 @@ const Profile = () => {
   const handleUpdate = async () => {
     try {
       setLoading(true);
-      const newUser = await user?.update({
+      await user?.update({
         firstName,
         lastName,
       });

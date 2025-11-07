@@ -1,6 +1,7 @@
 import { chatMessages, icons, images } from "@/constants";
 import { useFocusEffect } from "@react-navigation/native";
 import { router, useLocalSearchParams } from "expo-router";
+import { ArrowLeft, MoreVertical, Phone } from "lucide-react-native";
 import { useCallback, useRef, useState } from "react";
 import {
   Alert,
@@ -112,14 +113,15 @@ export default function ChatThread() {
             onPress={() => router.replace("/(root)/(tabs)/chat")}
             className="mr-3"
           >
-            <View className="items-center justify-center w-10 h-10 bg-white rounded-full">
+            <ArrowLeft size={24} color="#000" />
+            {/* <View className="items-center justify-center w-10 h-10 bg-white rounded-full">
               <Image
                 source={icons.backArrow}
                 className="w-6 h-6"
                 resizeMode="contain"
                 tintColor={"#000"}
               />
-            </View>
+            </View> */}
           </TouchableOpacity>
           <Image
             source={avatar ? { uri: String(avatar) } : icons.person}
@@ -141,27 +143,29 @@ export default function ChatThread() {
             }
             className="items-center justify-center mr-2 bg-white rounded-full shadow-sm w-9 h-9 shadow-neutral-300"
           >
-            <View className="items-center justify-center w-10 h-10 bg-white rounded-full">
+            <Phone size={24} color="#000" />
+            {/* <View className="items-center justify-center w-10 h-10 bg-white rounded-full">
               <Image
                 source={icons.phone}
                 className="w-6 h-6"
                 resizeMode="contain"
                 tintColor={"#000"}
               />
-            </View>
+            </View> */}
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() => setMenuOpen((v) => !v)}
             className="items-center justify-center bg-white rounded-full shadow-sm w-9 h-9 shadow-neutral-300"
           >
-            <View className="items-center justify-center w-10 h-10 bg-white rounded-full">
+            <MoreVertical size={26} color="#000" />
+            {/* <View className="items-center justify-center w-10 h-10 bg-white rounded-full">
               <Image
                 source={icons.ellipsis}
                 className="w-7 h-7"
                 resizeMode="contain"
                 tintColor={"#000"}
               />
-            </View>
+            </View> */}
           </TouchableOpacity>
           {menuOpen && (
             <View className="absolute right-0 z-20 w-40 p-1 bg-white rounded-lg shadow-lg top-14 shadow-neutral-400">
