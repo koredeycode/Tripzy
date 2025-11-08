@@ -3,6 +3,7 @@ import { tokenCache } from "@clerk/clerk-expo/token-cache";
 import { useFonts } from "expo-font";
 import { SplashScreen, Stack } from "expo-router";
 import { useEffect } from "react";
+import { StatusBar } from "react-native";
 import "./globals.css";
 export default function AppLayout() {
   const [fontsLoaded, error] = useFonts({
@@ -24,6 +25,7 @@ export default function AppLayout() {
   if (!fontsLoaded) return null;
   return (
     <ClerkProvider tokenCache={tokenCache}>
+      <StatusBar hidden />
       <Stack screenOptions={{ headerShown: false }} />
     </ClerkProvider>
   );

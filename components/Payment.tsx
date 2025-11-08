@@ -20,23 +20,15 @@ const Payment = ({
   const { initPaymentSheet, presentPaymentSheet } = useStripe();
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  const {
-    // userAddress,
-    // userLongitude,
-    // userLatitude,
-    // destinationAddress,
-    // destinationLatitude,
-    // destinationLongitude,
-    destinationLocation,
-    userLocation,
-  } = useLocationStore();
+  const [error, setError] = useState<string | null>(null);
 
+  const { destinationLocation, userLocation } = useLocationStore();
   const { userId } = useAuth();
 
+  // Fetch params for the payment sheet
   const fetchPaymentSheetParams = async () => {
-    const { paymentIntent, ephemeralKey, customer } = await fetchAPI(
-      "/(api)/(stripe)/create",
-      {
+    try {
+      const res = await fetchAPI("/(api)/(stripe)/create", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -44,47 +36,60 @@ const Payment = ({
           email,
           amount,
         }),
-      }
-    );
+      });
 
-    return {
-      paymentIntent,
-      ephemeralKey,
-      customer,
-    };
+      if (!res?.paymentIntent || !res?.ephemeralKey || !res?.customer) {
+        throw new Error("Invalid payment initialization response");
+      }
+
+      return res;
+    } catch (err: any) {
+      console.error("Error fetching payment params:", err);
+      throw new Error("Failed to initialize payment. Please try again.");
+    }
   };
 
+  // Initialize payment sheet
   const initializePaymentSheet = async () => {
     setLoading(true);
-    const { paymentIntent, ephemeralKey, customer } =
-      await fetchPaymentSheetParams();
+    setError(null);
 
-    const { error } = await initPaymentSheet({
-      merchantDisplayName: "Tripzy Inc.",
-      customerId: customer,
-      customerEphemeralKeySecret: ephemeralKey,
-      paymentIntentClientSecret: paymentIntent.client_secret,
-      // Set `allowsDelayedPaymentMethods` to true if your business can handle payment
-      //methods that complete payment after a delay, like SEPA Debit and Sofort.
-      allowsDelayedPaymentMethods: true,
-      defaultBillingDetails: {
-        name: fullName,
-      },
-      returnURL: "tripzy://book-ride",
-    });
-    if (!error) {
-      console.log(error);
-      // setLoading(true);
+    try {
+      const { paymentIntent, ephemeralKey, customer } =
+        await fetchPaymentSheetParams();
+
+      const { error: initError } = await initPaymentSheet({
+        merchantDisplayName: "Tripzy Inc.",
+        customerId: customer,
+        customerEphemeralKeySecret: ephemeralKey,
+        paymentIntentClientSecret: paymentIntent.client_secret,
+        allowsDelayedPaymentMethods: true,
+        defaultBillingDetails: { name: fullName },
+        returnURL: "tripzy://book-ride",
+      });
+
+      if (initError) {
+        console.error("Stripe init error:", initError);
+        throw new Error(initError.message || "Failed to initialize payment");
+      }
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
+  // Open the payment sheet
   const openPaymentSheet = async () => {
-    const { error } = await presentPaymentSheet();
+    try {
+      const { error: paymentError } = await presentPaymentSheet();
 
-    if (error) {
-      Alert.alert(`Error code: ${error.code}`, error.message);
-    } else {
+      if (paymentError) {
+        Alert.alert("Payment Error", paymentError.message);
+        return;
+      }
+
+      // Record the ride if payment succeeds
       await fetchAPI("/(api)/ride/create", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -102,8 +107,11 @@ const Payment = ({
           user_id: userId,
         }),
       });
+
       setSuccess(true);
-      // Alert.alert("Success", "Your order is confirmed!");
+    } catch (err: any) {
+      console.error("Error opening payment sheet:", err);
+      Alert.alert("Error", "Something went wrong while processing payment.");
     }
   };
 
@@ -113,20 +121,38 @@ const Payment = ({
 
   return (
     <View>
-      {loading ? (
-        <ActivityIndicator className="my-10" color={"#000"} />
-      ) : (
+      {/* Loading */}
+      {loading && <ActivityIndicator className="my-10" color={"#000"} />}
+
+      {/* Error message */}
+      {error && (
+        <View className="items-center my-5">
+          <Text className="mb-2 text-center text-red-500 font-jakarta-medium">
+            {error}
+          </Text>
+          <CustomButton
+            title="Retry"
+            onPress={initializePaymentSheet}
+            className="w-40"
+          />
+        </View>
+      )}
+
+      {/* Payment button */}
+      {!loading && !error && (
         <CustomButton
           title="Confirm Ride"
           className="my-10"
           onPress={openPaymentSheet}
         />
       )}
+
+      {/* Success modal */}
       <ReactNativeModal
         isVisible={success}
         onBackdropPress={() => setSuccess(false)}
       >
-        <View className="items-center justify-center bg-white flex-flex-col p-7 rounded-2xl">
+        <View className="items-center justify-center bg-white p-7 rounded-2xl">
           <Image source={images.check} className="mt-5 w-28 h-28" />
           <Text className="mt-5 text-2xl text-center font-jakarta-bold">
             Ride booked!
@@ -138,7 +164,7 @@ const Payment = ({
           <CustomButton
             title="Back Home"
             onPress={() => {
-              setSuccess(true);
+              setSuccess(false);
               router.push("/(protected)/(tabs)");
             }}
             className="mt-5"

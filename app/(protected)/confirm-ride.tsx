@@ -31,7 +31,6 @@ const ConfirmRide = () => {
         userLongitude: userLocation.longitude,
       });
       setMarkers(newMarkers);
-      console.log({ markers });
     }
   }, [driverList, userLocation]);
 
@@ -51,12 +50,12 @@ const ConfirmRide = () => {
         setDrivers(drivers as unknown as MarkerData[]);
       });
     }
-  }, [markers, destinationLocation, loading]);
+  }, [markers, destinationLocation]);
 
   if (loading)
     return (
-      <View className="flex items-center justify-between w-full">
-        <ActivityIndicator size="small" color={"#000"} />
+      <View className="flex items-center justify-center w-full h-full bg-white">
+        <ActivityIndicator size="large" color={"#000"} />
       </View>
     );
 

@@ -20,7 +20,7 @@ const Map = ({
   const { userLocation, destinationLocation, tempDestinationLocation } =
     useLocationStore();
 
-  const { drivers, selectedDriver } = useDriverStore();
+  const { drivers, selectedDriver, setSelectedDriver } = useDriverStore();
 
   const region = calculateRegion({
     userLatitude: userLocation?.latitude!,
@@ -70,6 +70,7 @@ const Map = ({
             image={
               selectedDriver === driver.id ? icons.selectedMarker : icons.marker
             }
+            onPress={() => setSelectedDriver(driver.id)}
           />
         ))}
         {/* {tempDestination && !destinationLocation && (

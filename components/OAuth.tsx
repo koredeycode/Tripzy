@@ -37,7 +37,7 @@ const OAuth = () => {
               return;
             }
 
-            router.push("/");
+            router.push("/(protected)/(tabs)");
           },
         });
         if (signUp?.createdUserId) {
