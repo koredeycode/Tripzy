@@ -22,7 +22,12 @@ const Payment = ({
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const { destinationLocation, userLocation } = useLocationStore();
+  const {
+    destinationLocation,
+    userLocation,
+    setDestinationLocation,
+    setTempDestinationLocation,
+  } = useLocationStore();
   const { userId } = useAuth();
 
   // Fetch params for the payment sheet
@@ -107,6 +112,9 @@ const Payment = ({
           user_id: userId,
         }),
       });
+
+      await setDestinationLocation(null);
+      await setTempDestinationLocation(null);
 
       setSuccess(true);
     } catch (err: any) {
