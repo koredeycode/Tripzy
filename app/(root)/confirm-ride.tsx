@@ -1,13 +1,72 @@
 import CustomButton from "@/components/CustomButton";
 import DriverCard from "@/components/DriverCard";
 import RideLayout from "@/components/RideLayout";
-import { useDriverStore } from "@/store";
+import { useFetch } from "@/lib/fetch";
+import { calculateDriverTimes, generateMarkersFromData } from "@/lib/map";
+import { useDriverStore, useLocationStore } from "@/store";
+import { Driver, MarkerData } from "@/type";
 import { router } from "expo-router";
-import React from "react";
-import { Alert, FlatList, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import { ActivityIndicator, Alert, FlatList, Text, View } from "react-native";
 
 const ConfirmRide = () => {
-  const { drivers, selectedDriver, setSelectedDriver } = useDriverStore();
+  const {
+    data: driverList,
+    loading,
+    error,
+  } = useFetch<Driver[]>("/(api)/driver");
+
+  const { userLocation, destinationLocation, tempDestinationLocation } =
+    useLocationStore();
+  const { drivers, setDrivers, selectedDriver, setSelectedDriver } =
+    useDriverStore();
+  const [markers, setMarkers] = useState<MarkerData[]>([]);
+
+  useEffect(() => {
+    if (Array.isArray(driverList)) {
+      if (!userLocation?.latitude || !userLocation.longitude) return;
+      const newMarkers = generateMarkersFromData({
+        data: driverList,
+        userLatitude: userLocation.latitude,
+        userLongitude: userLocation.longitude,
+      });
+      setMarkers(newMarkers);
+      console.log({ markers });
+    }
+  }, [driverList, userLocation]);
+
+  useEffect(() => {
+    if (
+      markers.length > 0 &&
+      destinationLocation?.latitude &&
+      destinationLocation?.longitude
+    ) {
+      calculateDriverTimes({
+        markers,
+        userLatitude: userLocation?.latitude!,
+        userLongitude: userLocation?.longitude!,
+        destinationLatitude: destinationLocation?.latitude!,
+        destinationLongitude: destinationLocation?.longitude!,
+      }).then((drivers) => {
+        setDrivers(drivers as unknown as MarkerData[]);
+      });
+    }
+  }, [markers, destinationLocation, loading]);
+
+  if (loading)
+    return (
+      <View className="flex items-center justify-between w-full">
+        <ActivityIndicator size="small" color={"#000"} />
+      </View>
+    );
+
+  if (error)
+    return (
+      <View className="flex items-center justify-between w-full">
+        <Text>Error: {error}</Text>
+      </View>
+    );
+
   return (
     <RideLayout title="Choose a Driver" snapPoints={["65%", "85%"]}>
       <FlatList
@@ -22,6 +81,7 @@ const ConfirmRide = () => {
         keyExtractor={(item) => item.id.toString()}
         ListFooterComponent={() => (
           <View className="mx-5 mt-10">
+            {loading && <Text>Loading drivers</Text>}
             <CustomButton
               title="Select Ride"
               onPress={() => {

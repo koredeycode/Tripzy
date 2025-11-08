@@ -55,6 +55,7 @@ export interface Ride {
 
 export interface ButtonProps extends TouchableOpacityProps {
   title: string;
+  textStyles?: string;
   bgVariant?: "primary" | "secondary" | "danger" | "outline" | "success";
   textVariant?: "primary" | "default" | "secondary" | "danger" | "success";
   IconLeft?: React.ComponentType<any>;
@@ -125,8 +126,8 @@ export interface LocationStore {
   coordinates: LatLng[];
 
   setUserLocation: (location: Location) => void;
-  setDestinationLocation: (location: Location) => Promise<void>;
-  setTempDestinationLocation: (location: Location) => Promise<void>;
+  setDestinationLocation: (location: Location | null) => Promise<void>;
+  setTempDestinationLocation: (location: Location | null) => Promise<void>;
 
   fetchRoute: (
     origin: LatLng,

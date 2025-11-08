@@ -14,7 +14,11 @@ export const useLocationStore = create<LocationStore>((set, get) => ({
     });
   },
 
-  setTempDestinationLocation: async (location: Location) => {
+  setTempDestinationLocation: async (location) => {
+    if (!location) {
+      set({ tempDestinationLocation: null });
+      return;
+    }
     const { userLocation, fetchRoute } = get();
 
     set({ tempDestinationLocation: location });
@@ -30,7 +34,11 @@ export const useLocationStore = create<LocationStore>((set, get) => ({
     }
   },
 
-  setDestinationLocation: async (location: Location) => {
+  setDestinationLocation: async (location) => {
+    if (!location) {
+      set({ destinationLocation: null });
+      return;
+    }
     const { userLocation, fetchRoute, coordinates } = get();
 
     set({ destinationLocation: location });

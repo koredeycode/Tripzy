@@ -24,11 +24,11 @@ const DriverCard = ({ item, selected, setSelected }: DriverCardProps) => {
 
           <View className="flex flex-row items-center ml-2 space-x-1">
             <Image source={icons.star} className="w-3.5 h-3.5" />
-            <Text className="text-sm font-jakarta">4</Text>
+            <Text className="ml-1 text-sm font-jakarta">{item.rating}</Text>
           </View>
         </View>
 
-        <View className="flex flex-row items-center justify-start">
+        <View className="flex flex-row items-center justify-start mt-2">
           <View className="flex flex-row items-center">
             <Image source={icons.dollar} className="w-4 h-4" />
             <Text className="ml-1 text-sm font-jakarta">${item.price}</Text>

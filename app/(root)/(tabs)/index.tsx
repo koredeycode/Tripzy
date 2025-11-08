@@ -73,7 +73,12 @@ export default function Index() {
 
     await setDestinationLocation(tempDestinationLocation);
     console.log("start ride end");
-    router.push(`/(root)/find-ride`);
+    router.push(`/(root)/confirm-ride`);
+  };
+
+  const handleResetDestination = async () => {
+    await setDestinationLocation(null);
+    await setTempDestinationLocation(null);
   };
 
   useEffect(() => {
@@ -149,59 +154,57 @@ export default function Index() {
               containerStyle="bg-white shadow-md shadow-neutral-300"
               handlePress={handleDestinationPress}
             /> */}
-            <LocationAutocomplete onSelect={handleDestinationPress} />
-            <>
-              <Text className="mt-5 text-xl font-jakarta-bold">
-                Or select on map
-              </Text>
-              <View className="flex flex-row items-center justify-center h-[300px]">
-                <Map onPress={handleMapPress} />
-              </View>
-              {/* From–To Section */}
-              {/* {tempDestinationLocation && userLocation && ( */}
-              {userLocation && (
-                <View className="p-4 mt-4 bg-white shadow-md rounded-2xl">
-                  <View className="my-3">
-                    <Text className="mb-3 text-lg font-jakarta-semibold">
-                      From
-                    </Text>
-                    <NomTextInput
-                      handlePress={() => {}}
-                      icon={icons.target}
-                      initialLocation={userLocation?.address}
-                      containerStyle="bg-neutral-100"
-                      textInputBackgroundColor="#f5f5f5"
-                    />
-                  </View>
-                  {tempDestinationLocation && (
-                    <>
-                      <View className="my-3">
-                        <Text className="mb-3 text-lg font-jakarta-semibold">
-                          To
-                        </Text>
-                        <NomTextInput
-                          // handlePress={(location) => setDestinationLocation(location)}
-                          handlePress={() => {}}
-                          icon={icons.map}
-                          initialLocation={
-                            tempDestinationLocation
-                              ? tempDestinationLocation?.address
-                              : "Select Destination Address"
-                          }
-                          containerStyle="bg-neutral-100"
-                          textInputBackgroundColor="transparent"
-                        />
-                      </View>
-                      <CustomButton
-                        title="Start Ride"
-                        onPress={handleStartRide}
-                      />
-                    </>
-                  )}
+            {!tempDestinationLocation && (
+              <>
+                <LocationAutocomplete onSelect={handleDestinationPress} />
+                <Text className="mt-5 text-xl font-jakarta-bold">
+                  Or select on map
+                </Text>
+                <View className="flex flex-row items-center justify-center h-[300px]">
+                  <Map onPress={handleMapPress} />
                 </View>
-              )}
-              {/* )} */}
-            </>
+              </>
+            )}
+            {/* From–To Section */}
+            {userLocation && tempDestinationLocation && (
+              <View className="p-4 mt-4 bg-white shadow-md rounded-2xl">
+                <View className="my-3">
+                  <Text className="mb-3 text-lg font-jakarta-semibold">
+                    From
+                  </Text>
+                  <NomTextInput
+                    handlePress={() => {}}
+                    icon={icons.target}
+                    initialLocation={userLocation?.address}
+                    containerStyle="bg-neutral-100"
+                    textInputBackgroundColor="#f5f5f5"
+                  />
+                </View>
+
+                <View className="my-3">
+                  <Text className="mb-3 text-lg font-jakarta-semibold">To</Text>
+                  <NomTextInput
+                    // handlePress={(location) => setDestinationLocation(location)}
+                    handlePress={() => {}}
+                    icon={icons.map}
+                    initialLocation={
+                      tempDestinationLocation
+                        ? tempDestinationLocation?.address
+                        : "Select Destination Address"
+                    }
+                    containerStyle="bg-neutral-100"
+                    textInputBackgroundColor="transparent"
+                  />
+                </View>
+                <CustomButton title="Start Ride" onPress={handleStartRide} />
+                <CustomButton
+                  title="Cancel"
+                  onPress={handleResetDestination}
+                  className="mt-3 bg-neutral-400"
+                  textStyles="text-black"
+                />
+              </View>
+            )}
             <Text className="mt-5 text-xl font-jakarta-bold">Recent Rides</Text>
           </>
         )}
