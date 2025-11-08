@@ -1,5 +1,6 @@
 import CustomButton from "@/components/CustomButton";
 import InputField from "@/components/InputField";
+import { fetchAPI } from "@/lib/fetch";
 import { useUser } from "@clerk/clerk-expo";
 import { Pencil } from "lucide-react-native";
 import { useState } from "react";
@@ -20,6 +21,16 @@ const Profile = () => {
       await user?.update({
         firstName,
         lastName,
+      });
+      // TODO: Create a database user
+      await fetchAPI("/(api)/user", {
+        method: "PUT",
+        body: JSON.stringify({
+          first_name: firstName,
+          last_name: lastName,
+
+          clerkId: user?.id,
+        }),
       });
     } catch (error) {
       console.error("Update failed:", error);
