@@ -18,7 +18,7 @@ export async function POST(request: Request) {
     } = body;
 
     if (
-      !origin_address ||
+      -!origin_address ||
       !destination_address ||
       !origin_latitude ||
       !origin_longitude ||

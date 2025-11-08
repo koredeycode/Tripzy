@@ -33,7 +33,7 @@ export default function Index() {
   const { user } = useUser();
   const { signOut } = useAuth();
   const { data: recentRides, loading } = useFetch<Ride[]>(
-    `/(api)/ride/${user?.id}`
+    `/(api)/user/${user?.id}/rides`
   );
 
   const [hasPermissions, setHasPermissions] = useState(false);

@@ -11,7 +11,7 @@ const Rides = () => {
   const { user } = useUser();
 
   const { data: recentRides, loading } = useFetch<Ride[]>(
-    `/(api)/ride/${user?.id}`
+    `/(api)/user/${user?.id}/rides`
   );
 
   return (

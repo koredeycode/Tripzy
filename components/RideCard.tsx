@@ -2,8 +2,9 @@ import { icons } from "@/constants";
 import { formatDate, formatTime } from "@/lib/utils";
 import { Ride } from "@/type";
 import cn from "clsx";
+import { router } from "expo-router";
 import React from "react";
-import { Image, Text, View } from "react-native";
+import { Image, Text, TouchableOpacity, View } from "react-native";
 
 const RideCard = ({
   ride: {
@@ -15,12 +16,16 @@ const RideCard = ({
     origin_address,
     driver,
     payment_status,
+    ride_id,
   },
 }: {
   ride: Ride;
 }) => {
   return (
-    <View className="flex flex-row items-center justify-center mb-3 bg-white rounded-lg shadow-sm shadow-neutral-300">
+    <TouchableOpacity
+      onPress={() => router.push(`/(protected)/ride/${ride_id}`)}
+      className="flex flex-row items-center justify-center mb-3 bg-white rounded-lg shadow-sm shadow-neutral-300"
+    >
       <View className="flex flex-col items-start justify-center p-3">
         <View className="flex flex-row items-center justify-between">
           <Image
@@ -84,7 +89,7 @@ const RideCard = ({
           </View>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };
 

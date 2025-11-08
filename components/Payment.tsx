@@ -90,7 +90,7 @@ const Payment = ({
       }
 
       // Record the ride if payment succeeds
-      await fetchAPI("/(api)/ride/create", {
+      await fetchAPI("/(api)/ride", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
