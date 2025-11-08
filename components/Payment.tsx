@@ -21,12 +21,14 @@ const Payment = ({
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const {
-    userAddress,
-    userLongitude,
-    userLatitude,
-    destinationAddress,
-    destinationLatitude,
-    destinationLongitude,
+    // userAddress,
+    // userLongitude,
+    // userLatitude,
+    // destinationAddress,
+    // destinationLatitude,
+    // destinationLongitude,
+    destinationLocation,
+    userLocation,
   } = useLocationStore();
 
   const { userId } = useAuth();
@@ -87,12 +89,12 @@ const Payment = ({
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          origin_address: userAddress,
-          destination_address: destinationAddress,
-          origin_latitude: userLatitude,
-          origin_longitude: userLongitude,
-          destination_latitude: destinationLatitude,
-          destination_longitude: destinationLongitude,
+          origin_address: userLocation?.address,
+          destination_address: destinationLocation?.address,
+          origin_latitude: userLocation?.latitude,
+          origin_longitude: userLocation?.longitude,
+          destination_latitude: destinationLocation?.latitude,
+          destination_longitude: destinationLocation?.longitude,
           ride_time: rideTime.toFixed(0),
           fare_price: parseInt(amount) * 100,
           payment_status: "paid",
@@ -137,7 +139,7 @@ const Payment = ({
             title="Back Home"
             onPress={() => {
               setSuccess(true);
-              router.push("/(root)/(tabs)");
+              router.push("/(protected)/(tabs)");
             }}
             className="mt-5"
           />

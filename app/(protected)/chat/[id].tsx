@@ -66,7 +66,7 @@ export default function ChatThread() {
   useFocusEffect(
     useCallback(() => {
       const onBack = () => {
-        router.replace("/(root)/(tabs)/chat");
+        router.replace("/(protected)/(tabs)/chat");
         return true;
       };
 
@@ -110,7 +110,7 @@ export default function ChatThread() {
       <View className="relative flex flex-row items-center justify-between px-4 py-3 border-b border-neutral-200">
         <View className="flex flex-row items-center">
           <TouchableOpacity
-            onPress={() => router.replace("/(root)/(tabs)/chat")}
+            onPress={() => router.replace("/(protected)/(tabs)/chat")}
             className="mr-3"
           >
             <ArrowLeft size={24} color="#000" />
@@ -173,7 +173,7 @@ export default function ChatThread() {
                 className="px-3 py-4 rounded-md hover:bg-neutral-100"
                 onPress={() => {
                   setMenuOpen(false);
-                  router.push({ pathname: "/(root)/(tabs)/profile" });
+                  router.push({ pathname: "/(protected)/(tabs)/profile" });
                 }}
               >
                 <Text className="text-md font-jakarta">View profile</Text>

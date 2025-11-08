@@ -89,7 +89,7 @@ const ConfirmRide = () => {
                   Alert.alert("Error", "Please select a driver.");
                   return;
                 }
-                router.push("/(root)/book-ride");
+                router.push("/(protected)/book-ride");
               }}
             />
           </View>

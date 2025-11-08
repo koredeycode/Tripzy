@@ -40,7 +40,7 @@ export default function Index() {
 
   const handleSignOut = async () => {
     await signOut();
-    router.replace("/(root)/(auth)/sign-in");
+    router.replace("/(auth)/sign-in");
   };
 
   const handleMapPress = async (event: MapPressEvent) => {
@@ -73,7 +73,7 @@ export default function Index() {
 
     await setDestinationLocation(tempDestinationLocation);
     console.log("start ride end");
-    router.push(`/(root)/confirm-ride`);
+    router.push(`/(protected)/confirm-ride`);
   };
 
   const handleResetDestination = async () => {
@@ -88,7 +88,10 @@ export default function Index() {
         setHasPermissions(false);
         return;
       }
-      let location = await ExpoLocation.getCurrentPositionAsync();
+      //ToDo: improve the accuracy here
+      let location = await ExpoLocation.getCurrentPositionAsync({
+        accuracy: 6,
+      });
 
       console.log({
         latitude: location.coords.latitude,
@@ -157,8 +160,8 @@ export default function Index() {
             {!tempDestinationLocation && (
               <>
                 <LocationAutocomplete onSelect={handleDestinationPress} />
-                <Text className="mt-5 text-xl font-jakarta-bold">
-                  Or select on map
+                <Text className="mt-5 mb-2 text-md font-jakarta-bold">
+                  Or select a specific location on the map
                 </Text>
                 <View className="flex flex-row items-center justify-center h-[300px]">
                   <Map onPress={handleMapPress} />
