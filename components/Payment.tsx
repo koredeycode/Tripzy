@@ -33,7 +33,7 @@ const Payment = ({
   // Fetch params for the payment sheet
   const fetchPaymentSheetParams = async () => {
     try {
-      const res = await fetchAPI("/(api)/(stripe)/create", {
+      const { data: res } = await fetchAPI("/stripe/create", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -95,7 +95,7 @@ const Payment = ({
       }
 
       // Record the ride if payment succeeds
-      await fetchAPI("/(api)/ride", {
+      await fetchAPI("/rides", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

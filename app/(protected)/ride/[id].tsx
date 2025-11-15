@@ -19,7 +19,7 @@ const RideDetail = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
 
-  const { data: ride, loading } = useFetch<Ride>(`/(api)/ride/${id}`);
+  const { data: ride, loading } = useFetch<Ride>(`/rides/${id}`);
 
   if (loading) {
     return (

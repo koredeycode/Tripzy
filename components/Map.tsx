@@ -15,7 +15,7 @@ const Map = ({
 }: {
   onPress?: (event: MapPressEvent) => Promise<void>;
 }) => {
-  // const { data: drivers, loading, error } = useFetch<Driver[]>("/(api)/driver");
+  // const { data: drivers, loading, error } = useFetch<Driver[]>("/drivers");
 
   const { userLocation, destinationLocation, tempDestinationLocation } =
     useLocationStore();

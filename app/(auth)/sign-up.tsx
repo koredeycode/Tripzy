@@ -68,7 +68,7 @@ const SignUp = () => {
       // and redirect the user
       if (signUpAttempt.status === "complete") {
         // TODO: Create a database user
-        await fetchAPI("/(api)/user", {
+        await fetchAPI("/users", {
           method: "POST",
           body: JSON.stringify({
             first_name: form.first_name,

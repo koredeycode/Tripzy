@@ -23,7 +23,7 @@ const Profile = () => {
         lastName,
       });
       // TODO: Create a database user
-      await fetchAPI("/(api)/user", {
+      await fetchAPI("/users", {
         method: "PUT",
         body: JSON.stringify({
           first_name: firstName,

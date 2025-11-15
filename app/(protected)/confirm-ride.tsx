@@ -10,11 +10,7 @@ import React, { useEffect, useState } from "react";
 import { ActivityIndicator, Alert, FlatList, Text, View } from "react-native";
 
 const ConfirmRide = () => {
-  const {
-    data: driverList,
-    loading,
-    error,
-  } = useFetch<Driver[]>("/(api)/driver");
+  const { data: driverList, loading, error } = useFetch<Driver[]>("/drivers");
 
   const { userLocation, destinationLocation, tempDestinationLocation } =
     useLocationStore();
