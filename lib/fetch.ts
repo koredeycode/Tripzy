@@ -4,7 +4,13 @@ export const fetchAPI = async (url: string, options?: RequestInit) => {
   try {
     const response = await fetch(
       `${process.env.EXPO_PUBLIC_SERVER_URL}${url}`,
-      options
+      {
+        ...options,
+        headers: {
+          "Content-Type": "application/json",
+          ...(options ? options.headers : {}),
+        },
+      }
     );
     if (!response.ok) {
       new Error(`HTTP error! status: ${response.status}`);

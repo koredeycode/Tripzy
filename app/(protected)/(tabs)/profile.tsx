@@ -22,16 +22,15 @@ const Profile = () => {
         firstName,
         lastName,
       });
-      // TODO: Create a database user
-      await fetchAPI("/users", {
+
+      const res = await fetchAPI(`/users/${user?.id}`, {
         method: "PUT",
         body: JSON.stringify({
           first_name: firstName,
           last_name: lastName,
-
-          clerkId: user?.id,
         }),
       });
+      console.log({ res });
     } catch (error) {
       console.error("Update failed:", error);
     } finally {
