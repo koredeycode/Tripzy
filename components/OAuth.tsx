@@ -24,9 +24,9 @@ const OAuth = () => {
         });
 
       // If sign in was successful, set the active session
-      if (createdSessionId) {
+      if (createdSessionId && setActive) {
         console.log({ createdSessionId, signUp });
-        setActive!({
+        await setActive({
           session: createdSessionId,
           // Check for session tasks and navigate to custom UI to help users resolve them
           // See https://clerk.com/docs/guides/development/custom-flows/overview#session-tasks
@@ -37,9 +37,10 @@ const OAuth = () => {
               return;
             }
 
-            router.push("/(protected)/(tabs)");
+            router.replace("/(protected)/(tabs)");
           },
         });
+
         if (signUp?.createdUserId) {
           await fetchAPI("/users", {
             method: "POST",
