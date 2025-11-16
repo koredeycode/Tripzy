@@ -1,5 +1,14 @@
-import { DriverStore, Location, LocationStore, MarkerData } from "@/type";
+import {
+  DriverStore,
+  ExtraConfig,
+  Location,
+  LocationStore,
+  MarkerData,
+} from "@/type";
+import Constants from "expo-constants";
 import { create } from "zustand";
+
+const { orsApiKey } = Constants.expoConfig?.extra as ExtraConfig;
 
 export const useLocationStore = create<LocationStore>((set, get) => ({
   destinationLocation: null,
@@ -23,11 +32,11 @@ export const useLocationStore = create<LocationStore>((set, get) => ({
 
     set({ tempDestinationLocation: location });
     if (userLocation?.latitude && userLocation?.longitude) {
-      const apiKey = process.env.EXPO_PUBLIC_ORS_API_KEY!;
+      // const apiKey = process.env.EXPO_PUBLIC_ORS_API_KEY!;
       const route = await fetchRoute(
         { latitude: userLocation.latitude, longitude: userLocation.longitude },
         { latitude: location.latitude, longitude: location.longitude },
-        apiKey
+        orsApiKey
       );
 
       set({ coordinates: route });
@@ -39,15 +48,15 @@ export const useLocationStore = create<LocationStore>((set, get) => ({
       set({ destinationLocation: null });
       return;
     }
-    const { userLocation, fetchRoute, coordinates } = get();
+    const { userLocation, fetchRoute } = get();
 
     set({ destinationLocation: location });
     if (userLocation?.latitude && userLocation?.longitude) {
-      const apiKey = process.env.EXPO_PUBLIC_ORS_API_KEY!;
+      // const apiKey = process.env.EXPO_PUBLIC_ORS_API_KEY!;
       const route = await fetchRoute(
         { latitude: userLocation.latitude, longitude: userLocation.longitude },
         { latitude: location.latitude, longitude: location.longitude },
-        apiKey
+        orsApiKey
       );
 
       set({ coordinates: route });

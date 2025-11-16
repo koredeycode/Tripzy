@@ -1,10 +1,13 @@
+import { ExtraConfig } from "@/type";
 import { ClerkProvider } from "@clerk/clerk-expo";
 import { tokenCache } from "@clerk/clerk-expo/token-cache";
+import Constants from "expo-constants";
 import { useFonts } from "expo-font";
 import { SplashScreen, Stack } from "expo-router";
 import { useEffect } from "react";
 import { StatusBar } from "react-native";
 import "./globals.css";
+
 export default function AppLayout() {
   const [fontsLoaded, error] = useFonts({
     "Jakarta-Bold": require("../assets/fonts/PlusJakartaSans-Bold.ttf"),
@@ -15,6 +18,7 @@ export default function AppLayout() {
     "Jakarta-Regular": require("../assets/fonts/PlusJakartaSans-Regular.ttf"),
     "Jakarta-SemiBold": require("../assets/fonts/PlusJakartaSans-SemiBold.ttf"),
   });
+  const { clerkPublishableKey } = Constants.expoConfig?.extra as ExtraConfig;
 
   useEffect(() => {
     if (error) throw error;
@@ -24,7 +28,7 @@ export default function AppLayout() {
 
   if (!fontsLoaded) return null;
   return (
-    <ClerkProvider tokenCache={tokenCache}>
+    <ClerkProvider tokenCache={tokenCache} publishableKey={clerkPublishableKey}>
       <StatusBar hidden />
       <Stack screenOptions={{ headerShown: false }} />
     </ClerkProvider>

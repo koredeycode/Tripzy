@@ -1,7 +1,8 @@
 import { icons } from "@/constants";
 import { formatDate, formatTime } from "@/lib/utils";
-import { Ride } from "@/type";
+import { ExtraConfig, Ride } from "@/type";
 import cn from "clsx";
+import Constants from "expo-constants";
 import { router } from "expo-router";
 import React from "react";
 import { Image, Text, TouchableOpacity, View } from "react-native";
@@ -21,6 +22,7 @@ const RideCard = ({
 }: {
   ride: Ride;
 }) => {
+  const { geoapifyApiKey } = Constants.expoConfig?.extra as ExtraConfig;
   return (
     <TouchableOpacity
       onPress={() => router.push(`/(protected)/ride/${ride_id}`)}
@@ -30,7 +32,7 @@ const RideCard = ({
         <View className="flex flex-row items-center justify-between">
           <Image
             source={{
-              uri: `https://maps.geoapify.com/v1/staticmap?style=osm-bright&width=600&height=400&center=lonlat:${destination_longitude},${destination_latitude}&zoom=14&apiKey=${process.env.EXPO_PUBLIC_GEOAPIFY_API_KEY}`,
+              uri: `https://maps.geoapify.com/v1/staticmap?style=osm-bright&width=600&height=400&center=lonlat:${destination_longitude},${destination_latitude}&zoom=14&apiKey=${geoapifyApiKey}`,
             }}
             className="w-[80px] h-[90px] rounded-lg"
           />

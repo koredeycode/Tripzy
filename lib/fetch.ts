@@ -1,17 +1,17 @@
+import { ExtraConfig } from "@/type";
+import Constants from "expo-constants";
 import { useCallback, useEffect, useState } from "react";
 
 export const fetchAPI = async (url: string, options?: RequestInit) => {
+  const { serverUrl } = Constants.expoConfig?.extra as ExtraConfig;
   try {
-    const response = await fetch(
-      `${process.env.EXPO_PUBLIC_SERVER_URL}${url}`,
-      {
-        ...options,
-        headers: {
-          "Content-Type": "application/json",
-          ...(options ? options.headers : {}),
-        },
-      }
-    );
+    const response = await fetch(`${serverUrl}${url}`, {
+      ...options,
+      headers: {
+        "Content-Type": "application/json",
+        ...(options ? options.headers : {}),
+      },
+    });
     if (!response.ok) {
       new Error(`HTTP error! status: ${response.status}`);
     }

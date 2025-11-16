@@ -159,3 +159,12 @@ export interface TabBarIconProps {
   icon: any;
   title: string;
 }
+
+export interface ExtraConfig {
+  clerkPublishableKey: string;
+  serverUrl: string;
+  geoapifyApiKey: string;
+  googleApiKey: string;
+  stripePublishableKey: string;
+  orsApiKey: string;
+}

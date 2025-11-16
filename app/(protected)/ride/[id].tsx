@@ -1,6 +1,11 @@
-import React from "react";
+import { icons } from "@/constants";
+import { useFetch } from "@/lib/fetch";
+import { formatDate, formatTime } from "@/lib/utils";
+import { ExtraConfig, Ride } from "@/type";
+import cn from "clsx";
+import Constants from "expo-constants";
 import { useLocalSearchParams, useRouter } from "expo-router";
-import { SafeAreaView } from "react-native-safe-area-context";
+import React from "react";
 import {
   ActivityIndicator,
   Image,
@@ -9,15 +14,12 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { icons } from "@/constants";
-import { useFetch } from "@/lib/fetch";
-import { Ride } from "@/type";
-import { formatDate, formatTime } from "@/lib/utils";
-import cn from "clsx";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const RideDetail = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
   const router = useRouter();
+  const { geoapifyApiKey } = Constants.expoConfig?.extra as ExtraConfig;
 
   const { data: ride, loading } = useFetch<Ride>(`/rides/${id}`);
 
@@ -61,7 +63,7 @@ const RideDetail = () => {
         {/* Map Snapshot */}
         <Image
           source={{
-            uri: `https://maps.geoapify.com/v1/staticmap?style=osm-bright&width=800&height=400&center=lonlat:${ride.destination_longitude},${ride.destination_latitude}&zoom=13&apiKey=${process.env.EXPO_PUBLIC_GEOAPIFY_API_KEY}`,
+            uri: `https://maps.geoapify.com/v1/staticmap?style=osm-bright&width=800&height=400&center=lonlat:${ride.destination_longitude},${ride.destination_latitude}&zoom=13&apiKey=${geoapifyApiKey}`,
           }}
           className="w-full mb-5 h-52 rounded-xl"
           resizeMode="cover"

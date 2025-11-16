@@ -7,7 +7,9 @@ import { icons } from "@/constants";
 import { formatTime } from "@/lib/utils";
 import { useDriverStore, useLocationStore } from "@/store";
 
+import { ExtraConfig } from "@/type";
 import { StripeProvider } from "@stripe/stripe-react-native";
+import Constants from "expo-constants";
 
 const BookRide = () => {
   const { user } = useUser();
@@ -17,10 +19,11 @@ const BookRide = () => {
   const driverDetails = drivers?.filter(
     (driver) => +driver.id === selectedDriver
   )[0];
+  const { stripePublishableKey } = Constants.expoConfig?.extra as ExtraConfig;
 
   return (
     <StripeProvider
-      publishableKey={process.env.EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY!}
+      publishableKey={stripePublishableKey}
       merchantIdentifier="merchant.tripzy.com" // required for Apple Pay
       urlScheme="tripzy" // required for 3D Secure and bank redirects
     >

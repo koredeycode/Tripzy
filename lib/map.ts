@@ -1,6 +1,7 @@
-import { Driver, MarkerData } from "@/type";
+import { Driver, ExtraConfig, MarkerData } from "@/type";
+import Constants from "expo-constants";
 
-const directionsAPI = process.env.EXPO_PUBLIC_GOOGLE_API_KEY;
+// const directionsAPI = process.env.EXPO_PUBLIC_GOOGLE_API_KEY;
 
 export const generateMarkersFromData = ({
   data,
@@ -140,14 +141,14 @@ export const calculateDriverTimes = async ({
     !destinationLongitude
   )
     return;
-
-  const ORS_API_KEY = process.env.EXPO_PUBLIC_ORS_API_KEY; // store key in .env
+  const { orsApiKey } = Constants.expoConfig?.extra as ExtraConfig;
+  // const ORS_API_KEY = process.env.EXPO_PUBLIC_ORS_API_KEY; // store key in .env
   // console.log({ ORS_API_KEY });
   try {
     const timesPromises = markers.map(async (marker) => {
       // Step 1: Calculate time from driver → user
       const responseToUser = await fetch(
-        `https://api.openrouteservice.org/v2/directions/driving-car?api_key=${ORS_API_KEY}&start=${marker.longitude},${marker.latitude}&end=${userLongitude},${userLatitude}`
+        `https://api.openrouteservice.org/v2/directions/driving-car?api_key=${orsApiKey}&start=${marker.longitude},${marker.latitude}&end=${userLongitude},${userLatitude}`
       );
       const dataToUser = await responseToUser.json();
       // const timeToUser = dataToUser.routes?.[0]?.summary?.duration; // seconds
@@ -158,7 +159,7 @@ export const calculateDriverTimes = async ({
 
       // Step 2: Calculate time from user → destination
       const responseToDestination = await fetch(
-        `https://api.openrouteservice.org/v2/directions/driving-car?api_key=${ORS_API_KEY}&start=${userLongitude},${userLatitude}&end=${destinationLongitude},${destinationLatitude}`
+        `https://api.openrouteservice.org/v2/directions/driving-car?api_key=${orsApiKey}&start=${userLongitude},${userLatitude}&end=${destinationLongitude},${destinationLatitude}`
       );
       const dataToDestination = await responseToDestination.json();
       // const timeToDestination =
