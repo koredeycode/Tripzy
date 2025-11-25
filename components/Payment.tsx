@@ -31,7 +31,7 @@ const Payment = ({
   const { userId } = useAuth();
 
   // Fetch params for the payment sheet
-  const fetchPaymentSheetParams = async () => {
+  const fetchPaymentSheetParams = React.useCallback(async () => {
     try {
       const { data: res } = await fetchAPI("/stripe/create", {
         method: "POST",
@@ -52,10 +52,10 @@ const Payment = ({
       console.error("Error fetching payment params:", err);
       throw new Error("Failed to initialize payment. Please try again.");
     }
-  };
+  }, [amount, email, fullName]);
 
   // Initialize payment sheet
-  const initializePaymentSheet = async () => {
+  const initializePaymentSheet = React.useCallback(async () => {
     setLoading(true);
     setError(null);
 
@@ -82,7 +82,7 @@ const Payment = ({
     } finally {
       setLoading(false);
     }
-  };
+  }, [fetchPaymentSheetParams, fullName, initPaymentSheet]);
 
   // Open the payment sheet
   const openPaymentSheet = async () => {
@@ -125,7 +125,7 @@ const Payment = ({
 
   useEffect(() => {
     initializePaymentSheet();
-  }, []);
+  }, [initializePaymentSheet]);
 
   return (
     <View>

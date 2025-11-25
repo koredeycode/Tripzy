@@ -12,8 +12,7 @@ import { ActivityIndicator, Alert, FlatList, Text, View } from "react-native";
 const ConfirmRide = () => {
   const { data: driverList, loading, error } = useFetch<Driver[]>("/drivers");
 
-  const { userLocation, destinationLocation, tempDestinationLocation } =
-    useLocationStore();
+  const { userLocation, destinationLocation } = useLocationStore();
   const { drivers, setDrivers, selectedDriver, setSelectedDriver } =
     useDriverStore();
   const [markers, setMarkers] = useState<MarkerData[]>([]);
@@ -46,7 +45,7 @@ const ConfirmRide = () => {
         setDrivers(drivers as unknown as MarkerData[]);
       });
     }
-  }, [markers, destinationLocation]);
+  }, [markers, destinationLocation, userLocation, setDrivers]);
 
   if (loading)
     return (

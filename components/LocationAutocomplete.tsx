@@ -1,13 +1,13 @@
 import { icons } from "@/constants";
 import React, { useEffect, useRef, useState } from "react";
 import {
-  Animated,
-  FlatList,
-  Image,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
+    Animated,
+    FlatList,
+    Image,
+    Text,
+    TextInput,
+    TouchableOpacity,
+    View,
 } from "react-native";
 import { useDebouncedCallback } from "use-debounce";
 
@@ -43,21 +43,21 @@ const LocationAutocomplete = ({
   // Animation
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
-  const fadeIn = () => {
+  const fadeIn = React.useCallback(() => {
     Animated.timing(fadeAnim, {
       toValue: 1,
       duration: 200,
       useNativeDriver: true,
     }).start();
-  };
+  }, [fadeAnim]);
 
-  const fadeOut = () => {
+  const fadeOut = React.useCallback(() => {
     Animated.timing(fadeAnim, {
       toValue: 0,
       duration: 150,
       useNativeDriver: true,
     }).start(() => setShowDropdown(false));
-  };
+  }, [fadeAnim]);
 
   const fetchSuggestions = async (text: string) => {
     if (text.trim().length < 2) {
@@ -126,7 +126,7 @@ const LocationAutocomplete = ({
   // Auto-hide dropdown when clearing query
   useEffect(() => {
     if (!query.trim()) fadeOut();
-  }, [query]);
+  }, [query, fadeOut]);
 
   const noLocations =
     !loading && query.trim().length >= 2 && suggestions.length === 0;

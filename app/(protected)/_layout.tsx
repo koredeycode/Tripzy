@@ -1,7 +1,4 @@
-import { useAuth } from "@clerk/clerk-expo";
-import { Redirect, Slot } from "expo-router";
-import { ActivityIndicator } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { Slot } from "expo-router";
 import React from "react";
 
 export default function ProtectedLayout() {

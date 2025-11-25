@@ -1,7 +1,8 @@
+import { icons } from "@/constants";
 import { GoogleInputProps } from "@/type";
 import cn from "clsx";
 import React from "react";
-import { View } from "react-native";
+import { Image, View } from "react-native";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 
 const googlePlacesApiKey = process.env.EXPO_PUBLIC_GOOGLE_API_KEY;

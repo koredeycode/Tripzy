@@ -14,7 +14,7 @@ const OAuth = () => {
   const handleGoogleSignIn = useCallback(async () => {
     try {
       // Start the authentication process by calling `startSSOFlow()`
-      const { createdSessionId, setActive, signIn, signUp } =
+      const { createdSessionId, setActive, signUp } =
         await startSSOFlow({
           strategy: "oauth_google",
           // For web, defaults to current path
@@ -63,7 +63,7 @@ const OAuth = () => {
       // for more info on error handling
       console.error(JSON.stringify(err, null, 2));
     }
-  }, []);
+  }, [startSSOFlow]);
 
   return (
     <View>

@@ -1,10 +1,9 @@
 import React from "react";
 
 import { SignedIn, SignedOut } from "@clerk/clerk-expo";
-import { Redirect, useRouter } from "expo-router";
+import { Redirect } from "expo-router";
 
 export default function WelcomeScreen() {
-  const router = useRouter();
 
   return (
     <>

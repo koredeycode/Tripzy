@@ -10,14 +10,14 @@ import { Location, Ride } from "@/type";
 import { useAuth, useUser } from "@clerk/clerk-expo";
 import * as ExpoLocation from "expo-location";
 import { router } from "expo-router";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import {
-  ActivityIndicator,
-  FlatList,
-  Image,
-  Text,
-  TouchableOpacity,
-  View,
+    ActivityIndicator,
+    FlatList,
+    Image,
+    Text,
+    TouchableOpacity,
+    View,
 } from "react-native";
 import { MapPressEvent } from "react-native-maps";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -36,7 +36,7 @@ export default function Index() {
     `/users/${user?.id}/rides`
   );
 
-  const [hasPermissions, setHasPermissions] = useState(false);
+
 
   const handleSignOut = async () => {
     await signOut();
@@ -85,7 +85,6 @@ export default function Index() {
     const requestLocation = async () => {
       let { status } = await ExpoLocation.requestForegroundPermissionsAsync();
       if (status !== "granted") {
-        setHasPermissions(false);
         return;
       }
       //ToDo: improve the accuracy here
@@ -112,7 +111,7 @@ export default function Index() {
       });
     };
     requestLocation();
-  }, []);
+  }, [setUserLocation]);
 
   return (
     <SafeAreaView className="">
