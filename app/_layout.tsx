@@ -1,6 +1,6 @@
+import { tokenCache } from "@/lib/auth";
 import { ExtraConfig } from "@/type";
 import { ClerkProvider } from "@clerk/clerk-expo";
-import { tokenCache } from "@clerk/clerk-expo/token-cache";
 import Constants from "expo-constants";
 import { useFonts } from "expo-font";
 import { SplashScreen, Stack } from "expo-router";

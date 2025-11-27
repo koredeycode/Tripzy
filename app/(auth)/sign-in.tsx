@@ -30,6 +30,7 @@ const SignIn = () => {
       // If sign-in process is complete, set the created session as active
       // and redirect the user
       if (signInAttempt.status === "complete") {
+        console.log("Signin attemt completed", signInAttempt.createdSessionId);
         await setActive({ session: signInAttempt.createdSessionId });
         router.replace("/(protected)/(tabs)");
       } else {

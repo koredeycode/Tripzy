@@ -15,6 +15,14 @@
       "autoIncrement": true,
       "android": {
         "buildType": "apk"
+      },
+      "env": {
+        "EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY": "pk_test_ZHluYW1pYy1raXdpLTU5LmNsZXJrLmFjY291bnRzLmRldiQ",
+        "EXPO_PUBLIC_SERVER_URL": "https://tripzy-backend-tya4.onrender.com/api",
+        "EXPO_PUBLIC_GEOAPIFY_API_KEY": "c250f4a810cf4a438a27ff9a4b88c1bc",
+        "EXPO_PUBLIC_GOOGLE_API_KEY": "AIzaSyA0231bM0N5dG4hR6rDKTQ48UX_zug8xHo",
+        "EXPO_PUBLIC_STRIPE_PUBLISHABLE_KEY": "pk_test_51SPf4wBrzY47rPEGvAOixVMiVsA8je73Kz3LAvnWcNiMRH0WyA77awwXpPiSSpLNyJZ1odfrMY0Wket3l5ybMmcv00dcZ5np7k",
+        "EXPO_PUBLIC_ORS_API_KEY": "eyJvcmciOiI1YjNjZTM1OTc4NTExMTAwMDFjZjYyNDgiLCJpZCI6ImI5YTdjMTNlOTZlZDQ2ZjViYjdiMGRmNDNlYzFjYzY2IiwiaCI6Im11cm11cjY0In0="
       }
     }
   },

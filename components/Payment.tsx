@@ -40,6 +40,17 @@ const Payment = ({
           name: fullName || email.split("@")[0],
           email,
           amount,
+          origin_address: userLocation?.address,
+          destination_address: destinationLocation?.address,
+          origin_latitude: userLocation?.latitude,
+          origin_longitude: userLocation?.longitude,
+          destination_latitude: destinationLocation?.latitude,
+          destination_longitude: destinationLocation?.longitude,
+          ride_time: rideTime.toFixed(0),
+          // fare_price: parseInt(amount) * 100,
+          // payment_status: "paid",
+          driver_id: driverId,
+          user_id: userId,
         }),
       });
 
@@ -95,23 +106,23 @@ const Payment = ({
       }
 
       // Record the ride if payment succeeds
-      await fetchAPI("/rides", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          origin_address: userLocation?.address,
-          destination_address: destinationLocation?.address,
-          origin_latitude: userLocation?.latitude,
-          origin_longitude: userLocation?.longitude,
-          destination_latitude: destinationLocation?.latitude,
-          destination_longitude: destinationLocation?.longitude,
-          ride_time: rideTime.toFixed(0),
-          fare_price: parseInt(amount) * 100,
-          payment_status: "paid",
-          driver_id: driverId,
-          user_id: userId,
-        }),
-      });
+      // await fetchAPI("/rides", {
+      //   method: "POST",
+      //   headers: { "Content-Type": "application/json" },
+      //   body: JSON.stringify({
+      //     origin_address: userLocation?.address,
+      //     destination_address: destinationLocation?.address,
+      //     origin_latitude: userLocation?.latitude,
+      //     origin_longitude: userLocation?.longitude,
+      //     destination_latitude: destinationLocation?.latitude,
+      //     destination_longitude: destinationLocation?.longitude,
+      //     ride_time: rideTime.toFixed(0),
+      //     fare_price: parseInt(amount) * 100,
+      //     payment_status: "paid",
+      //     driver_id: driverId,
+      //     user_id: userId,
+      //   }),
+      // });
 
       await setDestinationLocation(null);
       await setTempDestinationLocation(null);
