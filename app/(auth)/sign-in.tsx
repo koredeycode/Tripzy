@@ -32,6 +32,7 @@ const SignIn = () => {
       if (signInAttempt.status === "complete") {
         console.log("Signin attemt completed", signInAttempt.createdSessionId);
         await setActive({ session: signInAttempt.createdSessionId });
+        console.log("should redirect to protected tabs here")
         router.replace("/(protected)/(tabs)");
       } else {
         // If the status isn't complete, check why. User might need to
@@ -44,6 +45,8 @@ const SignIn = () => {
       console.error(JSON.stringify(err, null, 2));
     }
   };
+
+
   return (
     <ScrollView className="flex-1 bg-white">
       <View className="flex-1 bg-white">
