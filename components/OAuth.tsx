@@ -14,18 +14,26 @@ const OAuth = () => {
   const handleGoogleSignIn = useCallback(async () => {
     try {
       // Start the authentication process by calling `startSSOFlow()`
-      console.log({redirectUri: AuthSession.makeRedirectUri({scheme: "tripzy", path: "/sign-in"})});
-      const { createdSessionId, setActive, signUp } =
-        await startSSOFlow({
-          strategy: "oauth_google",
-          // For web, defaults to current path
-          // For native, you must pass a scheme, like AuthSession.makeRedirectUri({ scheme, path })
-          // For more info, see https://docs.expo.dev/versions/latest/sdk/auth-session/#authsessionmakeredirecturioptions
-          redirectUrl: AuthSession.makeRedirectUri({scheme: "tripzy", path: "/sign-in"}),
-        });
+      console.log({
+        redirectUri: AuthSession.makeRedirectUri({
+          scheme: "tripzy",
+          path: "/sign-in",
+        }),
+      });
+      const { createdSessionId, setActive, signUp } = await startSSOFlow({
+        strategy: "oauth_google",
+        // For web, defaults to current path
+        // For native, you must pass a scheme, like AuthSession.makeRedirectUri({ scheme, path })
+        // For more info, see https://docs.expo.dev/versions/latest/sdk/auth-session/#authsessionmakeredirecturioptions
+        redirectUrl: AuthSession.makeRedirectUri({
+          scheme: "tripzy",
+          path: "/sign-in",
+        }),
+      });
 
       // If sign in was successful, set the active session
       if (createdSessionId && setActive) {
+        console.log("createdsession id and setactive found");
         console.log({ createdSessionId, signUp });
         await setActive({
           session: createdSessionId,
@@ -42,15 +50,18 @@ const OAuth = () => {
         });
 
         if (signUp?.createdUserId) {
+          console.log("created user id");
           await fetchAPI("/users", {
             method: "POST",
             body: JSON.stringify({
               first_name: signUp.firstName,
               last_name: signUp.lastName,
               email: signUp.emailAddress,
-              clerkId: signUp.createdUserId,
+              clerk_id: signUp.createdUserId,
             }),
           });
+        } else {
+          console.log("no created signup.createduseid", signUp);
         }
       } else {
         console.log("no createdsession id");

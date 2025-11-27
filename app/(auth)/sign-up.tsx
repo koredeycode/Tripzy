@@ -74,7 +74,7 @@ const SignUp = () => {
             first_name: form.first_name,
             last_name: form.last_name,
             email: form.email,
-            clerkId: signUpAttempt.createdUserId,
+            clerk_id: signUpAttempt.createdUserId,
           }),
         });
         await setActive({ session: signUpAttempt.createdSessionId });
