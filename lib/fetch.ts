@@ -22,17 +22,28 @@ export const fetchAPI = async (url: string, options?: RequestInit) => {
   }
 };
 
+import { useAuth } from "@clerk/clerk-expo";
+
 export const useFetch = <T>(url: string, options?: RequestInit) => {
   const [data, setData] = useState<T | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const { getToken } = useAuth();
 
   const fetchData = useCallback(async () => {
     setLoading(true);
     setError(null);
 
     try {
-      const result = await fetchAPI(url, options);
+      const token = await getToken();
+      console.log({token})
+      const result = await fetchAPI(url, {
+        ...options,
+        headers: {
+          ...options?.headers,
+          Authorization: `Bearer ${token}`,
+        },
+      });
       setData(result.data);
     } catch (err) {
       setError((err as Error).message);

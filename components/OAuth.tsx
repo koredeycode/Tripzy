@@ -51,7 +51,7 @@ const OAuth = () => {
 
         if (signUp?.createdUserId) {
           console.log("created user id");
-          await fetchAPI("/users", {
+          await fetchAPI("/auth/signup", {
             method: "POST",
             body: JSON.stringify({
               first_name: signUp.firstName,

@@ -1,7 +1,7 @@
 import CustomButton from "@/components/CustomButton";
 import InputField from "@/components/InputField";
 import { fetchAPI } from "@/lib/fetch";
-import { useUser } from "@clerk/clerk-expo";
+import { useAuth, useUser } from "@clerk/clerk-expo";
 import { Pencil } from "lucide-react-native";
 import { useState } from "react";
 import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
@@ -9,6 +9,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 const Profile = () => {
   const { user } = useUser();
+  const { getToken } = useAuth();
 
   const [editable, setEditable] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -23,8 +24,14 @@ const Profile = () => {
         lastName,
       });
 
+      const token = await getToken();
+      
       const res = await fetchAPI(`/users/${user?.id}`, {
         method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify({
           first_name: firstName,
           last_name: lastName,

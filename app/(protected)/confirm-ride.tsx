@@ -25,6 +25,7 @@ const ConfirmRide = () => {
         userLatitude: userLocation.latitude,
         userLongitude: userLocation.longitude,
       });
+      
       setMarkers(newMarkers);
     }
   }, [driverList, userLocation]);

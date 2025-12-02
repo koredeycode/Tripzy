@@ -28,14 +28,18 @@ const Payment = ({
     setDestinationLocation,
     setTempDestinationLocation,
   } = useLocationStore();
-  const { userId } = useAuth();
+  const { userId, getToken } = useAuth();
 
   // Fetch params for the payment sheet
   const fetchPaymentSheetParams = React.useCallback(async () => {
     try {
+      const token = await getToken();
       const { data: res } = await fetchAPI("/stripe/create", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
         body: JSON.stringify({
           name: fullName || email.split("@")[0],
           email,
